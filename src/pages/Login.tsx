@@ -56,7 +56,7 @@ const Login = () => {
 
                                 <button
                                     type="button"
-                                    className="text-sm text-violet-600 hover:text-violet-700"
+                                    className="text-sm text-[#7C3AED] hover:text-violet-700"
                                 >
                                     Forgot Password?
                                 </button>
@@ -93,7 +93,7 @@ const Login = () => {
 
                     <p className="text-center text-gray-500 text-[16px] font-normal">
                         New guardian?{" "}
-                        <span className="text-violet-600 font-medium cursor-pointer hover:text-violet-700">
+                        <span className="text-[#7C3AED] font-medium cursor-pointer hover:text-violet-700">
                             Create an account
                         </span>
                     </p>

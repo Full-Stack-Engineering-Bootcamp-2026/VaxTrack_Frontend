@@ -4,7 +4,7 @@ import Login from "./pages/Login"
 export function App() {
   return (
     <Routes>
-       <Route path="/login" element={<Login/>}/>
+      <Route path="/login" element={<Login />} />
     </Routes>
   )
 }

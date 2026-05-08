@@ -31,7 +31,6 @@ const DependentCard = ({ dependent }: Props) => {
         >
             <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-
                     <img
                         src="https://i.pravatar.cc/150?img=5"
                         alt="avatar"
@@ -112,8 +111,6 @@ const DependentCard = ({ dependent }: Props) => {
                         </p>
                     </div>
                 </div>
-
-                {/* Actions */}
                 <div className="mt-5 space-y-2">
 
                     <Button className="h-10 w-full rounded-xl bg-[#7C3AED] text-white hover:bg-[#6D28D9]">

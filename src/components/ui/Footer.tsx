@@ -26,7 +26,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Platform */}
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-[#1C1917]">
               Platform
@@ -51,7 +50,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources */}
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-[#1C1917]">
               Resources
@@ -76,7 +74,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Security */}
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-[#1C1917]">
               Secure Access
@@ -100,7 +97,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom */}
         <div className="mt-10 border-t border-[#E7E5E4] pt-5 text-center">
           <p className="text-[11px] text-[#A8A29E]">
             © 2024 VaxTrack. All rights reserved. Professional

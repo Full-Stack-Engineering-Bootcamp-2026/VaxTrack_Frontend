@@ -5,12 +5,14 @@ import { SidebarProvider } from "../ui/sidebar";
 
 const GuardianLayout = () => {
     return (
-        <SidebarProvider className="flex flex-col">
-            <Navbar />
-            <main>
-                <Outlet />
-            </main>
-            <Footer />
+        <SidebarProvider>
+            <div className="min-h-screen w-full overflow-x-hidden">
+                <Navbar />
+                <main>
+                    <Outlet />
+                </main>
+                <Footer />
+            </div>
         </SidebarProvider>
     );
 };

@@ -1,5 +1,7 @@
+import AddDependentCard from '@/components/AddDependentCard';
 import DependentCard from '@/components/DependentCard';
 import { Button } from '@/components/ui/button';
+import MedicalTipCard from '@/components/ui/MedicalTipCard';
 import { PlusCircle } from 'lucide-react';
 
 const dependents = [
@@ -36,28 +38,34 @@ const dependents = [
 ];
 const GuardianDashboard = () => {
     return (
-        <div className="min-h-screen bg-[#FAFAF9] px-8 py-8">
+        <div className="min-h-screen bg-[#FAFAF9] px-8 py-8 space-y-10">
+            <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
 
-            <div className="mb-8 flex items-start justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold text-[#1C1917]">
+
+                    <h1 className="text-3xl font-bold text-[#1C1917] md:text-4xl">
                         My Dependents
                     </h1>
 
-                    <p className="mt-2 text-sm text-[#78716C]">
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-[#78716C]">
                         Manage and monitor the immunization progress
                         of your family members in one centralized,
                         secure place.
                     </p>
+
                 </div>
 
-                <Button className="rounded-xl h-12 w-50 bg-[#7C3AED] shadow-md hover:bg-[#6D28D9]">
+                <Button className="h-12 w-46 max-w-full rounded-xl bg-[#7C3AED] px-6 shadow-md hover:bg-[#6D28D9]">
+
                     <PlusCircle className="mr-2 h-4 w-4" />
+
                     Add Dependent
+
                 </Button>
+
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
                 {dependents.map((dependent) => (
                     <DependentCard
@@ -66,7 +74,9 @@ const GuardianDashboard = () => {
                     />
                 ))}
 
+                <AddDependentCard />
             </div>
+            <MedicalTipCard/>
         </div>
     );
 }

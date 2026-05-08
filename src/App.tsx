@@ -20,7 +20,7 @@ export function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword/>}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
         <Route element={<ProtectedRoute allowedRole="GUARDIAN" />}>
           <Route element={<GuardianLayout />}>

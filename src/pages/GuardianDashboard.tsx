@@ -76,7 +76,7 @@ const GuardianDashboard = () => {
 
                 <AddDependentCard />
             </div>
-            <MedicalTipCard/>
+            <MedicalTipCard />
         </div>
     );
 }

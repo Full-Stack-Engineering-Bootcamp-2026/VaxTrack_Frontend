@@ -63,7 +63,7 @@ const VaccinationTrendChart = () => {
       </CardHeader>
 
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[320px] w-full">
+        <ChartContainer config={chartConfig} className="h-80 w-full">
           <AreaChart
             accessibilityLayer
             data={chartData}

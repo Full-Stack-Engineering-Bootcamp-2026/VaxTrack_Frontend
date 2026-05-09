@@ -41,7 +41,7 @@ const NotificationDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-[340px] rounded-2xl">
+      <DropdownMenuContent align="end" className="w-85 rounded-2xl">
         <DropdownMenuLabel className="text-base font-semibold">
           Notifications
         </DropdownMenuLabel>

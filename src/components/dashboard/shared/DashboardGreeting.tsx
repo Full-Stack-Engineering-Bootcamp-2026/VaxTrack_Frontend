@@ -18,9 +18,7 @@ const DashboardGreeting = () => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-3">
         <img
-          src="
-            https://i.pravatar.cc/150?img=12
-          "
+          src={user?.imageUrl || ""}
           alt="profile"
           className="size-14 rounded-2xl object-cover"
         />
@@ -40,4 +38,3 @@ const DashboardGreeting = () => {
 }
 
 export default DashboardGreeting
-    

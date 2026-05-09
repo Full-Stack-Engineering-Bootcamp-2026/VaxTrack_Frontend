@@ -13,6 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword"
 import ResetPassword from "./pages/ResetPassword"
 import NotificationsPage from "./pages/Notifications"
 import NotFound from "./pages/404"
+import StaffDashboard from "./pages/staff/StaffDashboard"
 
 export function App() {
   return (
@@ -45,7 +46,7 @@ export function App() {
           <Route element={<StaffLayout />}>
             <Route
               path="/staff/dashboard"
-            // element={<StaffDashboard />}
+            element={<StaffDashboard />}
             />
           </Route>
         </Route>

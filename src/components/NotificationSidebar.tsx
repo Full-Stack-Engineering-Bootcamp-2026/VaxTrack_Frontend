@@ -4,38 +4,55 @@ import {
     Calendar,
     AlertTriangle,
 } from "lucide-react"
-const filters = [
-    {
-        title: "All",
-        icon: Menu,
-        count: 12,
-        active: true,
-    },
-    {
-        title: "Unread",
-        icon: CheckCircle2,
-        count: 4,
-    },
-    {
-        title: "Upcoming",
-        icon: Calendar,
-    },
-    {
-        title: "Overdue",
-        icon: AlertTriangle,
-    },
-]
 
-export function NotificationSidebar() {
+
+type Props = {
+    filter: string
+    setFilter: (
+        value: string
+    ) => void
+    allCount: number
+}
+export function NotificationSidebar({
+    filter,
+    setFilter,
+    allCount
+}: Props) {
+    const filters = [
+        {
+            title: "All",
+            value: "ALL",
+            icon: Menu,
+            count: allCount,
+            active: true,
+        },
+        {
+            title: "Unread",
+            value: "UNREAD",
+            icon: CheckCircle2,
+            count: allCount,
+        },
+        {
+            title: "Upcoming",
+            value: "UPCOMING",
+            icon: Calendar,
+        },
+        {
+            title: "Overdue",
+            value: "OVERDUE",
+            icon: AlertTriangle,
+        },
+    ]
     return (
         <div>
             <div className="px-4 py-6">
                 <div>
                     <div className="space-y-2">
                         {filters.map((item) => (
-                            <div key={item.title}>
+                            <div key={item.title} onClick={() => setFilter(item.value)
+                            }>
                                 <div
-                                    className={`flex h-11 cursor-pointer items-center gap-3 rounded-xl px-3 transition ${item.active
+                                    className={`flex h-11 cursor-pointer items-center gap-3 rounded-xl px-3 transition ${filter === item.value
                                         ? "bg-[#EEE5FF] text-[#7C3AED]"
                                         : "text-gray-600 hover:bg-gray-100"
                                         }`}

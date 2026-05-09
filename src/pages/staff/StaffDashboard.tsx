@@ -51,61 +51,60 @@ const StaffDashboard = () => {
     upcoming: 0,
   })
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        setLoading(true)
+  const getToken = () => {
+    const persistedState = localStorage.getItem("persist:root")
 
-        const persistedState = localStorage.getItem("persist:root")
+    const parsedState = persistedState ? JSON.parse(persistedState) : null
 
-        const parsedState = persistedState ? JSON.parse(persistedState) : null
+    const auth = parsedState?.auth ? JSON.parse(parsedState.auth) : null
 
-        const auth = parsedState?.auth ? JSON.parse(parsedState.auth) : null
+    return auth?.token
+  }
 
-        const token = auth?.token
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true)
 
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        }
-
-        const [vaccinationResponse, complianceResponse, statusResponse] =
-          await Promise.all([
-            axios.get(
-              `http://localhost:3000/api/vaccination-record?page=${page}&limit=10`,
-              {
-                headers,
-              }
-            ),
-
-            axios.get(
-              "http://localhost:3000/api/vaccination-record/compliance",
-              {
-                headers,
-              }
-            ),
-
-            axios.get(
-              "http://localhost:3000/api/vaccination-record/status-breakdown",
-              {
-                headers,
-              }
-            ),
-          ])
-
-        setRecords(vaccinationResponse.data.data.data)
-
-        setPagination(vaccinationResponse.data.data.pagination)
-
-        setComplianceRate(complianceResponse.data.data.complianceRate)
-
-        setStatusData(statusResponse.data.data)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
+      const headers = {
+        Authorization: `Bearer ${getToken()}`,
       }
-    }
 
+      const [vaccinationResponse, complianceResponse, statusResponse] =
+        await Promise.all([
+          axios.get(
+            `http://localhost:3000/api/vaccination-record?page=${page}&limit=10`,
+            {
+              headers,
+            }
+          ),
+
+          axios.get("http://localhost:3000/api/vaccination-record/compliance", {
+            headers,
+          }),
+
+          axios.get(
+            "http://localhost:3000/api/vaccination-record/status-breakdown",
+            {
+              headers,
+            }
+          ),
+        ])
+
+      setRecords(vaccinationResponse.data.data.data)
+
+      setPagination(vaccinationResponse.data.data.pagination)
+
+      setComplianceRate(complianceResponse.data.data.complianceRate)
+
+      setStatusData(statusResponse.data.data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
     fetchDashboardData()
   }, [page])
 
@@ -196,15 +195,9 @@ const StaffDashboard = () => {
             ) : (
               <VaccinationTable
                 records={filteredRecords}
-                pagination={
-                  pagination || {
-                    page: 1,
-                    totalPages: 1,
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                  }
-                }
+                pagination={pagination}
                 onPageChange={setPage}
+                refetchData={fetchDashboardData}
               />
             )}
           </div>

@@ -12,10 +12,22 @@ import {
     persistReducer,
     persistStore,
 } from "redux-persist";
+import {
+    vaccinationRecordApi,
+} from "../apis/vaccinationRecordApi";
+import {
+    dashboardApi,
+} from "../apis/dashboardApi";
+import {
+    activityApi,
+} from "../apis/activityApi";
 
 const rootReducer =
     combineReducers({
         auth: authReducer,
+        [vaccinationRecordApi.reducerPath]: vaccinationRecordApi.reducer,
+        [dashboardApi.reducerPath]: dashboardApi.reducer,
+        [activityApi.reducerPath]: activityApi.reducer,
     });
 
 const persistConfig = {
@@ -39,7 +51,13 @@ export const store =
                 getDefaultMiddleware({
                     serializableCheck:
                         false,
-                }),
+                }).concat(
+                    vaccinationRecordApi.middleware,
+                    dashboardApi.middleware,
+                    activityApi.middleware
+
+                ),
+
     });
 
 export const persistor =

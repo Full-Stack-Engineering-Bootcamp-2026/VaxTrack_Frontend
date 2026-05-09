@@ -195,7 +195,7 @@ const Login = () => {
 
                     <p className="text-center text-gray-500 text-[16px] font-normal">
                         New guardian?{" "}
-                        <span className="text-[#7C3AED] font-medium cursor-pointer hover:text-violet-700">
+                        <span onClick={()=>navigate("/register")} className="text-[#7C3AED] font-medium cursor-pointer hover:text-violet-700">
                             Create an account
                         </span>
                     </p>

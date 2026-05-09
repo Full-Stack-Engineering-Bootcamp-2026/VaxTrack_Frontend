@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import zxcvbn from "zxcvbn";
@@ -12,6 +12,10 @@ import { FiShield } from "react-icons/fi";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import CreateAccountLogo from "@/components/svgImages/CreateAccountLogo";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 type CreateAccountFormData = {
     fullName: string;
@@ -70,17 +74,21 @@ const createAccountSchema = Joi.object({
 const CreateAccount = () => {
     const [showPassword, setShowPassword] =
         useState(false);
-
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
-        watch,
     } = useForm<CreateAccountFormData>({
         resolver: joiResolver(createAccountSchema),
     });
 
-    const password = watch("password") || "";
+    const password = useWatch({
+        control,
+        name: "password",
+        defaultValue: ""
+    });
 
     const passwordStrength = zxcvbn(password);
 
@@ -139,10 +147,29 @@ const CreateAccount = () => {
         },
     ];
 
+    const registerMutation = useMutation({
+        mutationFn: async (data: CreateAccountFormData) => {
+            const response = await axios.post("http://localhost:3000/api/users/register", {
+                fullName: data.fullName,
+                email: data.email,
+                password: data.password,
+                phone: data.phone
+            });
+            return response.data;
+        },
+        onSuccess: () => {
+            toast.success("Guardian registered successfully. Login to continue");
+            navigate("/login");
+        },
+        onError: () => {
+            toast.error("Registration failed");
+        }
+    })
+
     const onSubmit = (
         data: CreateAccountFormData
     ) => {
-        console.log(data);
+        registerMutation.mutate(data);
     };
 
     return (
@@ -277,7 +304,7 @@ const CreateAccount = () => {
 
                     <p className="text-center text-sm text-[#78716C]">
                         Already have an account?{" "}
-                        <span className="cursor-pointer font-medium text-[#7C3AED]">
+                        <span onClick={() => navigate("/login")} className="cursor-pointer font-medium text-[#7C3AED]">
                             Login
                         </span>
                     </p>

@@ -1,4 +1,5 @@
 import AddDependentCard from '@/components/AddDependentCard';
+import { AddDependentModal } from '@/components/AddDependentModal';
 import DependentCard from '@/components/DependentCard';
 import { Button } from '@/components/ui/button';
 import MedicalTipCard from '@/components/ui/MedicalTipCard';
@@ -40,9 +41,7 @@ const GuardianDashboard = () => {
     return (
         <div className="min-h-screen bg-[#FAFAF9] px-8 py-8 space-y-10">
             <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-
                 <div>
-
                     <h1 className="text-3xl font-bold text-[#1C1917] md:text-4xl">
                         My Dependents
                     </h1>
@@ -52,19 +51,17 @@ const GuardianDashboard = () => {
                         of your family members in one centralized,
                         secure place.
                     </p>
-
                 </div>
+                <AddDependentModal>
+                    <Button className="h-12 w-46 max-w-full rounded-xl bg-[#7C3AED] px-6 shadow-md hover:bg-[#6D28D9]">
 
-                <Button className="h-12 w-46 max-w-full rounded-xl bg-[#7C3AED] px-6 shadow-md hover:bg-[#6D28D9]">
+                        <PlusCircle className="mr-2 h-4 w-4" />
 
-                    <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Dependent
 
-                    Add Dependent
-
-                </Button>
-
+                    </Button>
+                </AddDependentModal>
             </div>
-
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
                 {dependents.map((dependent) => (
@@ -73,7 +70,6 @@ const GuardianDashboard = () => {
                         dependent={dependent}
                     />
                 ))}
-
                 <AddDependentCard />
             </div>
             <MedicalTipCard />

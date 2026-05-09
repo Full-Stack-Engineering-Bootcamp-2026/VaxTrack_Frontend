@@ -1,17 +1,17 @@
 import { Route, Routes } from "react-router-dom"
-import Login from "./pages/Login"
-import CreateAccount from "./pages/CreateAccount"
+import Login from "./pages/guardian/Login"
+import CreateAccount from "./pages/guardian/CreateAccount"
 import GuardianLayout from "./components/layouts/GuardianLayout"
 import StaffLayout from "./components/layouts/StaffLayout"
 import AdminLayout from "./components/layouts/AdminLayout"
-import GuardianDashboard from "./pages/GuardianDashboard"
+import GuardianDashboard from "./pages/guardian/GuardianDashboard"
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PublicRoute from "./components/protectedRoutes/PublicRoute"
 import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute"
-import ForgotPassword from "./pages/ForgotPassword"
-import ResetPassword from "./pages/ResetPassword"
-import NotificationsPage from "./pages/Notifications"
+import ForgotPassword from "./pages/guardian/ForgotPassword"
+import ResetPassword from "./pages/guardian/ResetPassword"
+import NotificationsPage from "./pages/guardian/Notifications"
 import NotFound from "./pages/404"
 import StaffDashboard from "./pages/staff/StaffDashboard"
 

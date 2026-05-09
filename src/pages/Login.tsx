@@ -9,7 +9,92 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import axios from 'axios';
+import { setCredentials } from "@/redux/slices/authSlice";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+type LoginFormData = {
+    email: string;
+    password: string;
+};
+const loginSchema = Joi.object({
+    email: Joi.string()
+        .email({ tlds: false })
+        .required()
+        .messages({
+            "string.email": "Invalid email address",
+            "string.empty": "Email is required",
+        }),
+
+    password: Joi.string()
+        .min(6)
+        .required()
+        .messages({
+            "string.min": "Password must be at least 6 characters",
+
+            "string.empty": "Password is required",
+        }),
+});
 const Login = () => {
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginFormData>({
+        resolver:
+            joiResolver(loginSchema),
+    });
+    const onSubmit = async (
+        data: LoginFormData
+    ) => {
+
+        try {
+
+            setLoading(true);
+
+            const response =
+                await axios.post(
+                    "http://localhost:3000/api/users/login",
+                    {
+                        email: data.email,
+                        password: data.password,
+                    }
+                );
+            const responseData =
+                response.data.data;
+
+            dispatch(
+                setCredentials({
+                    token:
+                        responseData.accessToken,
+
+                    user:
+                        responseData.user,
+                })
+            );
+            toast.success("Login successfull",);
+            const role =
+                responseData.user.role;
+
+            if (role === "GUARDIAN") navigate("/guardian/dashboard");
+            else if (role === "STAFF") navigate("/staff/dashboard");
+
+            else if (role === "ADMIN") navigate("/admin/dashboard");
+        } catch (error) {
+            toast.error("Login Failed");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
     const [showPassword, setShowPassword] = useState(false);
     return (
         <div className="flex flex-col items-center h-screen justify-start gap-3 font-sans">
@@ -32,7 +117,7 @@ const Login = () => {
                         </p>
                     </div>
 
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <div className="space-y-2">
                             <label className="text-[16px] text-[#4A4455]">
                                 Email
@@ -41,9 +126,17 @@ const Login = () => {
                             <div className="relative">
                                 <Input
                                     type="email"
+                                    {...register("email")}
                                     placeholder="name@example.com"
                                     className="bg-[#FFFFFF] h-12 rounded-[10px] border-gray-300 pr-12 text-base placeholder:text-gray-400 focus-visible:ring-violet-500"
                                 />
+                                {
+                                    errors.email && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.email.message}
+                                        </p>
+                                    )
+                                }
 
                                 <CiMail className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                             </div>
@@ -57,6 +150,8 @@ const Login = () => {
                                 <button
                                     type="button"
                                     className="text-sm text-[#7C3AED] hover:text-violet-700"
+                                    onClick={() =>
+                                        navigate("/forgot-password", { state: { allowed: true } })}
                                 >
                                     Forgot Password?
                                 </button>
@@ -65,9 +160,17 @@ const Login = () => {
                             <div className="relative">
                                 <Input
                                     type={showPassword ? "text" : "password"}
+                                    {...register("password")}
                                     placeholder="••••••••"
-                                    className="h-12 bg-[#FFFFFF] text-[#CCC3D8] rounded-[10px] border-gray-300 pr-12 text-base focus-visible:ring-violet-500"
+                                    className="h-12 bg-[#FFFFFF] placeholder:text-[#CCC3D8] rounded-[10px] border-gray-300 pr-12 text-base focus-visible:ring-violet-500"
                                 />
+                                {
+                                    errors.password && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.password.message}
+                                        </p>
+                                    )
+                                }
 
                                 <button
                                     type="button"
@@ -83,11 +186,10 @@ const Login = () => {
                             </div>
                         </div>
 
-                        <Button className="cursor-pointer w-full h-12 rounded-[10px] text-base font-medium bg-[#7C3AED] hover:bg-[#6a2fcf] shadow-md">
-                            Login
+                        <Button className="cursor-pointer w-full h-12 rounded-[10px] text-base font-medium bg-[#7C3AED] hover:bg-[#6a2fcf] shadow-md" disabled={loading}>
+                            {loading ? "Please wait...." : "Login"}
                         </Button>
                     </form>
-
                     <div className="border-t border-gray-200 my-4" />
 
 

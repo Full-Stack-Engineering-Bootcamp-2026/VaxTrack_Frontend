@@ -49,7 +49,7 @@ const createAccountSchema = Joi.object({
         }),
 
     password: Joi.string()
-        .min(8)
+        .min(6)
         .required()
         .messages({
             "string.min":
@@ -283,7 +283,6 @@ const CreateAccount = () => {
                     </p>
                 </CardContent>
             </Card>
-            {/* <img className="hidden  opacity-40 md:inline fixed right-4 bottom-4 size-50" src={illustration} alt="" /> */}
 
             <p className="mt-8 text-center text-[12px] leading-5 text-[#A8A29E]">
                 By creating an account, you agree to

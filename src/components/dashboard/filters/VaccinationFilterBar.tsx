@@ -1,8 +1,7 @@
-import { Search, SlidersHorizontal } from "lucide-react"
+import { Search } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 
-import { Button } from "@/components/ui/button"
 
 import {
   Select,
@@ -42,7 +41,7 @@ const VaccinationFilterBar = ({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <Select value={status} onValueChange={onStatusChange}>
-          <SelectTrigger className="h-11 w-full rounded-xl border-[#E7E5E4] sm:w-[180px]">
+          <SelectTrigger className="h-11 w-full rounded-xl border-[#E7E5E4] sm:w-45">
             <SelectValue
               placeholder="
                 Filter Status
@@ -61,10 +60,7 @@ const VaccinationFilterBar = ({
           </SelectContent>
         </Select>
 
-        <Button className="h-11 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9]">
-          <SlidersHorizontal className="size-4" />
-          Filters
-        </Button>
+
       </div>
     </div>
   )

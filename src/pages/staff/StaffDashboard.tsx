@@ -26,18 +26,22 @@ import QuickActionsCard from "@/components/dashboard/cards/QuickActionsCard"
 
 import DashboardGreeting from "@/components/dashboard/shared/DashboardGreeting"
 
+import useDebounce from "@/hooks/useDebounce"
+
 const StaffDashboard = () => {
   const [page, setPage] = useState(1)
 
   const [search, setSearch] = useState("")
 
+  const debouncedSearch = useDebounce(search, 500)
+
   const [status, setStatus] = useState("ALL")
 
   const [loading, setLoading] = useState(true)
 
-  const [records, setRecords] = useState([])
+  const [records, setRecords] = useState<any[]>([])
 
-  const [pagination, setPagination] = useState(null)
+  const [pagination, setPagination] = useState<any>(null)
 
   const [complianceRate, setComplianceRate] = useState(0)
 
@@ -104,6 +108,16 @@ const StaffDashboard = () => {
 
     fetchDashboardData()
   }, [page])
+
+  const filteredRecords = records.filter((record: any) => {
+    const matchesSearch = record.dependent.fullName
+      .toLowerCase()
+      .includes(debouncedSearch.toLowerCase())
+
+    const matchesStatus = status === "ALL" ? true : record.status === status
+
+    return matchesSearch && matchesStatus
+  })
 
   return (
     <div className="w-full bg-[#FAFAF9] p-4 md:p-6">
@@ -181,7 +195,7 @@ const StaffDashboard = () => {
               <VaccinationTableSkeleton />
             ) : (
               <VaccinationTable
-                records={records}
+                records={filteredRecords}
                 pagination={
                   pagination || {
                     page: 1,

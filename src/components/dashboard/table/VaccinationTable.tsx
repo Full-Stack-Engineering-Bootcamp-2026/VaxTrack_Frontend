@@ -74,7 +74,7 @@ const VaccinationTable = ({
   return (
     <div className="overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white shadow-sm transition-all">
       <div className="overflow-x-auto">
-        <Table className="min-w-[950px] xl:min-w-full">
+        <Table className="min-w-237.5 xl:min-w-full">
           <TableHeader className="sticky top-0 z-10 bg-[#FAFAF9]">
             <TableRow className="bg-[#FAFAF9] hover:bg-[#FAFAF9]">
               <TableHead className="h-14 px-4 text-[#78716C] md:px-6">

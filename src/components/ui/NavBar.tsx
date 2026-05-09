@@ -11,7 +11,28 @@ import { logout } from "@/redux/slices/authSlice";
 import { toast } from "react-toastify";
 import type { RootState } from "@/redux/stores/store";
 
-
+const navItems = [
+    {
+        label: "My Dashboard",
+        path: "/guardian/dashboard",
+    },
+    {
+        label: "My Dependents",
+        path: "/guardian/dependents",
+    },
+    {
+        label: "Vaccinations",
+        path: "/guardian/vaccinations",
+    },
+    {
+        label: "Staff Management",
+        path: "/guardian/staff",
+    },
+    {
+        label: "Reports",
+        path: "/guardian/reports",
+    },
+]
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -42,7 +63,7 @@ const Navbar = () => {
         }
     };
     return (
-        <nav className="flex bg-sidebar px-3 sticky top-0 z-50 h-12 items-center">
+        <nav className="flex bg-sidebar px-3 sticky top-0  h-12 items-center border-b">
             {user?.role !== "GUARDIAN" &&
                 <div className="md:hidden flex-1">
                     <SidebarTrigger />
@@ -56,15 +77,32 @@ const Navbar = () => {
             </div>
             <div className="hidden lg:block">
                 <ul className="flex gap-5 text-[14px] text-[#57534E]">
-                    <li>My Dashboard</li>
-                    <li>My Dependents</li>
-                    <li>Vaccinations</li>
-                    <li>Staff Management</li>
-                    <li>Reports</li>
+                    {navItems
+                        .filter((item) => {
+                            // hide admin-only routes
+                            if (
+                                (item.label === "Staff Management" ||
+                                    item.label === "Reports") &&
+                                user?.role !== "ADMIN"
+                            ) {
+                                return false
+                            }
+
+                            return true
+                        })
+                        .map((item) => (
+                            <li
+                                key={item.path}
+                                className="cursor-pointer hover:text-[#7C3AED] transition-colors"
+                                onClick={() => navigate(item.path)}
+                            >
+                                {item.label}
+                            </li>
+                        ))}
                 </ul>
             </div>
             <div className="flex items-center justify-end flex-1 gap-6">
-                <div className="relative">
+                <div className="relative" onClick={()=>navigate("/guardian/notifications")}>
                     <FiBell className="hover:cursor-pointer" />
                     <div className="size-1.5 rounded-full bg-red-600 absolute top-0 right-0"></div>
                 </div>

@@ -11,6 +11,7 @@ import PublicRoute from "./components/protectedRoutes/PublicRoute"
 import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute"
 import ForgotPassword from "./pages/ForgotPassword"
 import ResetPassword from "./pages/ResetPassword"
+import NotificationsPage from "./pages/Notifications"
 
 export function App() {
   return (
@@ -27,6 +28,14 @@ export function App() {
             <Route
               path="/guardian/dashboard"
               element={<GuardianDashboard />}
+            />
+            <Route
+              path="/guardian/dependents"
+              element={<GuardianDashboard />}
+            />
+            <Route
+              path="/guardian/notifications"
+              element={<NotificationsPage />}
             />
           </Route>
         </Route>

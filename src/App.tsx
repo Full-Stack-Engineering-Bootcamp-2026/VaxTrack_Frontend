@@ -12,12 +12,14 @@ import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute"
 import ForgotPassword from "./pages/ForgotPassword"
 import ResetPassword from "./pages/ResetPassword"
 import NotificationsPage from "./pages/Notifications"
+import NotFound from "./pages/404"
 
 export function App() {
   return (
     <>
       <Routes>
         <Route element={<PublicRoute />}>
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -55,6 +57,7 @@ export function App() {
             />
           </Route>
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} transition={Flip} />
     </>

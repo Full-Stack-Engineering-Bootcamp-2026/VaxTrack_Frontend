@@ -52,14 +52,13 @@ const Navbar = () => {
                     },
                 }
             );
-
-            dispatch(logout());
-            toast.success("Logged out successfully");
-            navigate("/login");
-
         } catch (error) {
-            toast.error("Logout failed");
             console.error(error);
+        }
+        finally {
+            dispatch(logout())
+            navigate("/login")
+            toast.success("Logged out successfully")
         }
     };
     return (
@@ -79,7 +78,6 @@ const Navbar = () => {
                 <ul className="flex gap-5 text-[14px] text-[#57534E]">
                     {navItems
                         .filter((item) => {
-                            // hide admin-only routes
                             if (
                                 (item.label === "Staff Management" ||
                                     item.label === "Reports") &&
@@ -102,7 +100,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="flex items-center justify-end flex-1 gap-6">
-                <div className="relative" onClick={()=>navigate("/guardian/notifications")}>
+                <div className="relative" onClick={() => navigate("/guardian/notifications")}>
                     <FiBell className="hover:cursor-pointer" />
                     <div className="size-1.5 rounded-full bg-red-600 absolute top-0 right-0"></div>
                 </div>

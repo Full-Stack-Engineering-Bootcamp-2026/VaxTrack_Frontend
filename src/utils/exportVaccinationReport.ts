@@ -5,6 +5,7 @@ import autoTable from "jspdf-autotable"
 export const exportVaccinationReport = (
     records: any[]
 ) => {
+
     const doc = new jsPDF()
 
     doc.setFontSize(20)
@@ -24,6 +25,7 @@ export const exportVaccinationReport = (
     )
 
     autoTable(doc, {
+
         startY: 40,
 
         head: [
@@ -38,6 +40,7 @@ export const exportVaccinationReport = (
 
         body: records.map(
             (record) => [
+
                 record?.dependent
                     ?.fullName || "N/A",
 
@@ -52,14 +55,13 @@ export const exportVaccinationReport = (
                     ).toLocaleDateString()
                     : "N/A",
 
-                record?.administeredBy ||
-                "N/A",
+                record?.administeredBy
+                    ?.fullName || "N/A",
             ]
         ),
 
         styles: {
             fontSize: 10,
-
             cellPadding: 4,
         },
 

@@ -80,7 +80,7 @@ const Navbar = () => {
                         .filter((item) => {
                             if ((item.label === "Staff Management" ||item.label === "Reports") && user?.role !== "ADMIN") 
                                 return false
-                            if((item.label === "My Dependents" && user?.role !== "USER"))
+                            else if((item.label === "My Dependents" && user?.role !== "GUARDIAN"))
                                 return false
                             return true
                         })
@@ -96,7 +96,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="flex items-center justify-end flex-1 gap-6">
-                <div className="relative" onClick={() => navigate("/guardian/notifications")}>
+                <div className="relative" onClick={() => navigate(`/${user?.role.toLowerCase()}/notifications`)}>
                     <FiBell className="hover:cursor-pointer" />
                     <div className="size-1.5 rounded-full bg-red-600 absolute top-0 right-0"></div>
                 </div>

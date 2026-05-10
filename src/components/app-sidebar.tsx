@@ -185,7 +185,9 @@ export function AppSidebar() {
 
                 <div className="px-1 pb-6 pt-10">
 
-                    <button className="flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#7C3AED] text-sm font-medium text-white shadow-sm transition hover:bg-[#6D28D9]">
+                    <button
+                    onClick={()=>navigate(`/${user?.role.toLowerCase()}/vaccination-add`)}
+                    className="flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#7C3AED] text-sm font-medium text-white shadow-sm transition hover:bg-[#6D28D9]">
 
                         <GoPlusCircle className="h-4 w-4" />
 

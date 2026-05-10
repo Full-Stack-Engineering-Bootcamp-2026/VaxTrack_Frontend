@@ -25,9 +25,10 @@ import type {
 
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom";
+import { UpdateDependentModal } from "./UpdateDependentModal";
 
 type Dependent = {
-    id?:number;
+    id?: number;
     name: string;
     dob: string;
     age: string;
@@ -180,14 +181,15 @@ const DependentCard = ({ dependent }: Props) => {
                     </Button>
 
                     <div className="grid grid-cols-2 gap-2">
-
-                        <Button
-                            variant="outline"
-                            className="rounded-xl border-[#E7E5E4]"
-                        >
-                            <Pencil className="mr-2 h-4 w-4" />
-                            Edit
-                        </Button>
+                        <UpdateDependentModal dependent={dependent}>
+                            <Button
+                                variant="outline"
+                                className="rounded-xl border-[#E7E5E4]"
+                            >
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit
+                            </Button>
+                        </UpdateDependentModal>
 
                         <Button
                             variant="outline"

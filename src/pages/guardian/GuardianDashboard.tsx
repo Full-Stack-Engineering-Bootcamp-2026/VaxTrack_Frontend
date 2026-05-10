@@ -48,7 +48,7 @@ interface BackendDependent {
 
 const GuardianDashboard = () => {
 
-    const { token } = useSelector(
+    const { token, user } = useSelector(
         (state: RootState) => state.auth
     )
 
@@ -126,17 +126,15 @@ const GuardianDashboard = () => {
 
                 <div>
 
-                    <h1 className="text-3xl font-bold text-[#1C1917] md:text-4xl">
+                    <h1 className="text-[40px] font-bold text-[#1E1B18] md:text-4xl">
 
-                        My Dependents
+                        Welcome Back {user?.fullName}
 
                     </h1>
 
                     <p className="mt-2 max-w-2xl text-sm leading-6 text-[#78716C]">
 
-                        Manage and monitor the immunization progress
-                        of your family members in one centralized,
-                        secure place.
+                        Your family's health schedule is up to date for this month.
 
                     </p>
 
@@ -166,7 +164,7 @@ const GuardianDashboard = () => {
 
             ) : (
 
-                <div className="grid  items-start grid-cols-1 gap-6 xl:grid-cols-[1fr_250px]">
+                <div className="grid  items-start grid-cols-1 gap-6 xl:grid-cols-[1fr_320px]">
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
 

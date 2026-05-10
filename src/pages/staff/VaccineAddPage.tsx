@@ -72,7 +72,7 @@ const VaccineAddPage = () => {
 
           description: formData.description,
 
-          clinicalNotes: formData.clinicalNotes,
+          // clinicalNotes: formData.clinicalNotes,
 
           recommendedAgeInDays: Number(formData.recommendedAgeInDays),
 
@@ -307,14 +307,12 @@ const VaccineAddPage = () => {
                       isActive: !prev.isActive,
                     }))
                   }
-                  className={`relative h-7 w-14 rounded-full transition ${
-                    formData.isActive ? "bg-[#7C3AED]" : "bg-[#D6D3D1]"
-                  }`}
+                  className={`relative h-7 w-14 rounded-full transition ${formData.isActive ? "bg-[#7C3AED]" : "bg-[#D6D3D1]"
+                    }`}
                 >
                   <div
-                    className={`absolute top-1 size-5 rounded-full bg-white transition ${
-                      formData.isActive ? "left-8" : "left-1"
-                    }`}
+                    className={`absolute top-1 size-5 rounded-full bg-white transition ${formData.isActive ? "left-8" : "left-1"
+                      }`}
                   />
                 </button>
               </div>
@@ -358,7 +356,7 @@ const VaccineAddPage = () => {
             <div className="h-80 w-[320px] text-[#7C3AED]">
               <Injection />
             </div>
-          </div>    
+          </div>
         </div>
       </div>
     </div>

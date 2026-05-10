@@ -21,6 +21,8 @@ import StaffVaccinesPage from "./pages/staff/StaffVaccinePage"
 import OverdueVaccinationsPage from "./pages/staff/OverdueVaccinationsPage"
 import StaffReportsPage from "./pages/staff/StaffReportsPage"
 import VaccinationCataloguePage from "./pages/staff/VaccineAddPage"
+import VaccineCatalogueListPage from "./pages/staff/VaccineCatalogueListPage"
+import VaccineAddPage from "./pages/staff/VaccineAddPage"
 
 export function App() {
   return (
@@ -53,7 +55,8 @@ export function App() {
             <Route path="/staff/vaccines" element={<StaffVaccinesPage />} />
             <Route path="/staff/overdue" element={<OverdueVaccinationsPage />} />
             <Route path="/staff/reports" element={<StaffReportsPage />} />
-            <Route path="/staff/vaccination-catalogue" element={<VaccinationCataloguePage />} />
+            <Route path="/staff/vaccination-catalogue" element={<VaccineAddPage/>} />
+            <Route path="/staff/vaccine-catalog"element={<VaccineCatalogueListPage />}/>
             <Route path="/staff/profile" element={<ProfilePage />} />
           </Route>
         </Route>

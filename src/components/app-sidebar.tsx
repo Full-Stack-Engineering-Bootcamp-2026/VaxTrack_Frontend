@@ -33,30 +33,38 @@ import { logout } from "@/redux/slices/authSlice"
 import axios from "axios"
 
 const menuItems = [
+
     {
         title: "My Dashboard",
         icon: LayoutGrid,
-        path: "dashboard",
+        adminPath: "/admin/dashboard",
+        staffPath: "/staff/dashboard",
     },
+
     {
         title: "Vaccinations",
         icon: ClipboardList,
-        path: "vaccines",
+        adminPath: "/admin/vaccinations",
+        staffPath: "/staff/vaccinations",
     },
     {
         title: "Overdue Overview",
         icon: BellRing,
-        path: "overdue",
+        adminPath: "/admin/overdue",
+        staffPath: "/staff/overdue",
     },
     {
         title: "Staff Management",
         icon: Users,
-        path: "staff",
+        adminPath: "/admin/staff-management",
+        staffPath: "/staff/staff-management",
     },
+
     {
         title: "Reports",
         icon: BarChart3,
-        path: "reports",
+        adminPath: "/admin/reports",
+        staffPath: "/staff/reports",
     },
 ]
 
@@ -70,10 +78,7 @@ export function AppSidebar() {
         (state: RootState) => state.auth
     )
 
-    const baseRoute =
-        user?.role === "ADMIN"
-            ? "/admin"
-            : "/staff"
+    const isAdmin = user?.role === "ADMIN"
 
     const handleLogout = async () => {
 
@@ -126,31 +131,54 @@ export function AppSidebar() {
 
                 <SidebarMenu className="space-y-2">
 
-                    {menuItems.map((item) => (
+                    {menuItems
+                        .filter((item) => {
 
-                        <SidebarMenuItem key={item.title}>
+                            if (
+                                item.title === "Staff Management" &&
+                                user?.role !== "ADMIN"
+                            ) {
+                                return false
+                            }
 
-                            <SidebarMenuButton
-                                asChild
-                                className="h-11 rounded-xl px-3 text-[15px] font-medium text-gray-600 transition-all hover:bg-gray-100 hover:text-black data-[active=true]:bg-[#E9DDFF] data-[active=true]:text-[#7C3AED]"
-                            >
+                            return true
+                        })
+                        .map((item) => {
 
-                                <NavLink
-                                    to={`${baseRoute}/${item.path}`}
-                                >
-                                    {({ isActive }) => (
-                                        <>
-                                            <item.icon className="h-5 w-5" />
+                            const path =
+                                isAdmin
+                                    ? item.adminPath
+                                    : item.staffPath
 
-                                            <span>
-                                                {item.title}
-                                            </span>
-                                        </>
-                                    )}
-                                </NavLink>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
+                            return (
+
+                                <SidebarMenuItem key={item.title}>
+
+                                    <NavLink to={path}>
+
+                                        {({ isActive }) => (
+
+                                            <SidebarMenuButton
+                                                className={`h-11 w-full rounded-xl px-3 text-[15px] font-medium transition-all ${isActive
+                                                        ? "bg-[#E9DDFF] text-[#7C3AED]"
+                                                        : "text-gray-600 hover:bg-gray-100 hover:text-black"
+                                                    }`}
+                                            >
+
+                                                <item.icon className="h-5 w-5" />
+
+                                                <span>
+                                                    {item.title}
+                                                </span>
+
+                                            </SidebarMenuButton>
+                                        )}
+
+                                    </NavLink>
+
+                                </SidebarMenuItem>
+                            )
+                        })}
                 </SidebarMenu>
 
                 <div className="flex-1" />

@@ -38,7 +38,7 @@ const navItems = [
 
   {
     label: "Vaccinations",
-    path: "/guardian/vaccinations",
+    path: "/admin/vaccinations",
   },
 
   {
@@ -105,7 +105,7 @@ const Navbar = () => {
             .filter((item) => {
               if (
                 (item.label === "Staff Management" ||
-                  item.label === "Reports") &&
+                  item.label === "Reports") || item.label === "Vaccinations" &&
                 user?.role !== "ADMIN"
               ) {
                 return false
@@ -144,15 +144,32 @@ const Navbar = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <img
-              className="size-7 cursor-pointer rounded-full object-cover"
-              src={user?.imageUrl || "https://i.pravatar.cc/"}
+            <img className="size-7 cursor-pointer rounded-full object-cover"
+              src={
+                user?.imageUrl ||
+                "https://i.pravatar.cc/"
+              }
               alt="Profile"
             />
           </DropdownMenuTrigger>
-
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+            <DropdownMenuItem
+              onClick={() =>
+                navigate(
+                  `/${user?.role.toLowerCase()}/profile`
+                )
+              }
+              className="cursor-pointer"
+            >
+              Profile
+
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="cursor-pointer text-red-500 focus:text-red-500"
+            >
+
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>

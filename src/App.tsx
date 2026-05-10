@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard"
 import StaffManagement from "./pages/admin/StaffManagement"
 import ProfilePage from "./pages/profile/ProfilePage"
 import StaffVaccinesPage from "./pages/staff/StaffVaccinePage"
+import OverdueVaccinationsPage from "./pages/staff/OverdueVaccinationsPage"
 
 export function App() {
   return (
@@ -48,6 +49,7 @@ export function App() {
           <Route element={<StaffLayout />}>
             <Route path="/staff/dashboard" element={<StaffDashboard />} />
             <Route path="/staff/vaccines" element={<StaffVaccinesPage />} />
+            <Route path="/staff/overdue" element={<OverdueVaccinationsPage />} />
             <Route path="/staff/profile" element={<ProfilePage />} />
           </Route>
         </Route>

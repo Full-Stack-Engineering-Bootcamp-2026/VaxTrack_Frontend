@@ -29,6 +29,7 @@ import { useSelector } from "react-redux"
 
 import type { RootState } from "@/redux/stores/store"
 import { toast } from "sonner"
+import { AddStaffModal } from "@/components/AddStaffModal"
 
 const weeklyData = [
     {
@@ -157,9 +158,11 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="flex gap-3">
-                        <button className="rounded-[10px] bg-[#E9DDFF] px-5 py-2 text-sm font-medium text-[#7C3AED]">
-                            + Add Staff
-                        </button>
+                        <AddStaffModal>
+                            <button className="rounded-[10px] bg-[#E9DDFF] px-5 py-2 text-sm font-medium text-[#7C3AED]">
+                                + Add Staff
+                            </button>
+                        </AddStaffModal>
 
                         <button className="rounded-[10px] bg-[#7C3AED] px-5 py-2 text-sm font-medium text-white">
                             View Reports

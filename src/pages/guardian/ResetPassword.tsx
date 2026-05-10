@@ -35,13 +35,7 @@ const ResetPassword = () => {
 
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const persistedState = localStorage.getItem("persist:root")
-
-  const parsedState = persistedState ? JSON.parse(persistedState) : null
-
-  const auth = parsedState?.auth ? JSON.parse(parsedState.auth) : null
-
-  const token = auth?.token
+  const token = searchParams.get("token");
 
   const {
     register,
@@ -64,7 +58,7 @@ const ResetPassword = () => {
       if (error instanceof AxiosError) {
         toast.error(
           error.response?.data?.message ||
-            "Failed to update password. The link might be expired."
+          "Failed to update password. The link might be expired."
         )
       } else {
         toast.error("An unexpected error occurred")

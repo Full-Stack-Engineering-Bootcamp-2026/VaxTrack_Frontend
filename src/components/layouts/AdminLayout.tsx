@@ -7,19 +7,22 @@ import {
 } from "@/components/ui/sidebar";
 
 import { AppSidebar } from "@/components/app-sidebar";
-import Footer from "../ui/Footer";
-
+import { Toaster } from "@/components/ui/sonner"
 const AdminLayout = () => {
   return (
     <>
-      <Navbar />
-
       <SidebarProvider>
-        <AppSidebar />
-        <main className="w-full">
-          <Outlet />
-        </main>
-        <Footer />
+        <div className="min-h-screen w-full bg-[#FAFAF9]">
+          <Navbar />
+          <div className="flex">
+            <AppSidebar />
+            <main className="w-full">
+              <Outlet />
+              <Toaster />
+            </main>
+          </div>
+        </div>
+
       </SidebarProvider>
     </>
   );

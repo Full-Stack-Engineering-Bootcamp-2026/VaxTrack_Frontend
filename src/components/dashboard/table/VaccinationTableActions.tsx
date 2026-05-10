@@ -2,7 +2,12 @@ import { useState } from "react"
 
 import axios from "axios"
 
-import { MoreHorizontal, Pencil, Trash2, Syringe } from "lucide-react"
+import {
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Syringe,
+} from "lucide-react"
 
 import { toast } from "react-toastify"
 
@@ -32,239 +37,419 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+import RecordVaccinationDialog from "@/components/dashboard/dialogs/RecordVaccinationDialog"
+
 interface VaccinationTableActionsProps {
   id: number
 
   status: "COMPLETED" | "UPCOMING" | "OVERDUE"
 
   onSuccess?: () => void
+
+  record: any
+
+  refetchData: () => void
 }
 
 const VaccinationTableActions = ({
   id,
   status,
   onSuccess,
+  record,
+  refetchData,
 }: VaccinationTableActionsProps) => {
-  const [editOpen, setEditOpen] = useState(false)
 
-  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [editOpen, setEditOpen] =
+    useState(false)
 
-  const [loading, setLoading] = useState(false)
+  const [deleteOpen, setDeleteOpen] =
+    useState(false)
 
-  const [selectedStatus, setSelectedStatus] = useState(status)
+  const [
+    openRecordDialog,
+    setOpenRecordDialog,
+  ] = useState(false)
+
+  const [loading, setLoading] =
+    useState(false)
+
+  const [
+    selectedStatus,
+    setSelectedStatus,
+  ] = useState(status)
 
   const getToken = () => {
-    const persistedState = localStorage.getItem("persist:root")
 
-    const parsedState = persistedState ? JSON.parse(persistedState) : null
+    const persistedState =
+      localStorage.getItem(
+        "persist:root"
+      )
 
-    const auth = parsedState?.auth ? JSON.parse(parsedState.auth) : null
+    const parsedState =
+      persistedState
+        ? JSON.parse(
+            persistedState
+          )
+        : null
+
+    const auth =
+      parsedState?.auth
+        ? JSON.parse(
+            parsedState.auth
+          )
+        : null
 
     return auth?.token
   }
 
-  const handleUpdate = async () => {
-    try {
-      setLoading(true)
+  const handleUpdate =
+    async () => {
 
-      await axios.patch(
-        `http://localhost:3000/api/vaccination-record/${id}/status`,
+      try {
 
-        {
-          status: selectedStatus,
-        },
+        setLoading(true)
 
-        {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
+        await axios.patch(
+          `http://localhost:3000/api/vaccination-record/${id}/status`,
+
+          {
+            status:
+              selectedStatus,
           },
-        }
-      )
 
-      toast.success("Vaccination updated successfully")
+          {
+            headers: {
+              Authorization:
+                `Bearer ${getToken()}`,
+            },
+          }
+        )
 
-      setEditOpen(false)
+        toast.success(
+          "Vaccination updated successfully"
+        )
 
-      onSuccess?.()
-    } catch (error) {
-      console.error(error)
+        setEditOpen(false)
 
-      toast.error("Failed to update vaccination")
-    } finally {
-      setLoading(false)
+        onSuccess?.()
+
+        refetchData()
+
+      } catch (error) {
+
+        console.error(error)
+
+        toast.error(
+          "Failed to update vaccination"
+        )
+
+      } finally {
+
+        setLoading(false)
+      }
     }
-  }
 
-  const handleDelete = async () => {
-    try {
-      setLoading(true)
+  const handleDelete =
+    async () => {
 
-      await axios.delete(
-        `http://localhost:3000/api/vaccination-record/${id}`,
+      try {
 
-        {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        }
-      )
+        setLoading(true)
 
-      toast.success("Vaccination deleted successfully")
+        await axios.delete(
+          `http://localhost:3000/api/vaccination-record/${id}`,
 
-      setDeleteOpen(false)
+          {
+            headers: {
+              Authorization:
+                `Bearer ${getToken()}`,
+            },
+          }
+        )
 
-      onSuccess?.()
-    } catch (error) {
-      console.error(error)
+        toast.success(
+          "Vaccination deleted successfully"
+        )
 
-      toast.error("Failed to delete vaccination")
-    } finally {
-      setLoading(false)
+        setDeleteOpen(false)
+
+        onSuccess?.()
+
+        refetchData()
+
+      } catch (error) {
+
+        console.error(error)
+
+        toast.error(
+          "Failed to delete vaccination"
+        )
+
+      } finally {
+
+        setLoading(false)
+      }
     }
-  }
-
-  const handleRecordVaccination = async () => {
-    try {
-      setLoading(true)
-
-      await axios.put(
-        `http://localhost:3000/api/vaccination-record/${id}/record`,
-
-        {
-          administeredDate: new Date(),
-
-          batchNumber: "BATCH-2026-001",
-
-          notes: "Vaccination completed",
-        },
-
-        {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        }
-      )
-
-      toast.success("Vaccination recorded successfully")
-
-      onSuccess?.()
-    } catch (error) {
-      console.error(error)
-
-      toast.error("Failed to record vaccination")
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
+
     <>
+
       <DropdownMenu>
+
         <DropdownMenuTrigger asChild>
+
           <Button
             variant="ghost"
+
             size="icon"
+
             className="rounded-xl hover:bg-[#F5F3FF]"
           >
+
             <MoreHorizontal className="size-5" />
+
           </Button>
+
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-52 rounded-xl">
+        <DropdownMenuContent
+          align="end"
+
+          className="w-52 rounded-2xl"
+        >
+
           <DropdownMenuItem
-            onClick={() => setEditOpen(true)}
+            onClick={() =>
+              setEditOpen(true)
+            }
+
             className="cursor-pointer"
           >
+
             <Pencil className="size-4" />
+
             Edit Record
+
           </DropdownMenuItem>
 
-          {status !== "COMPLETED" && (
-            <DropdownMenuItem
-              onClick={handleRecordVaccination}
-              className="cursor-pointer"
-            >
-              <Syringe className="size-4" />
-              Record Vaccination
-            </DropdownMenuItem>
-          )}
+          {
+            status !== "COMPLETED" && (
+
+              <DropdownMenuItem
+                onClick={() =>
+                  setOpenRecordDialog(
+                    true
+                  )
+                }
+
+                className="cursor-pointer"
+              >
+
+                <Syringe className="size-4" />
+
+                Record Vaccination
+
+              </DropdownMenuItem>
+            )
+          }
 
           <DropdownMenuItem
-            onClick={() => setDeleteOpen(true)}
-            className="cursor-pointer text-red-600 focus:text-red-600"
+            onClick={() =>
+              setDeleteOpen(true)
+            }
+
+            className="
+              cursor-pointer
+              text-red-600
+              focus:text-red-600
+            "
           >
+
             <Trash2 className="size-4" />
+
             Delete
+
           </DropdownMenuItem>
+
         </DropdownMenuContent>
+
       </DropdownMenu>
 
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="rounded-2xl">
-          <DialogHeader>
-            <DialogTitle>Edit Vaccination</DialogTitle>
+      <Dialog
+        open={editOpen}
 
-            <DialogDescription>Update vaccination status.</DialogDescription>
+        onOpenChange={
+          setEditOpen
+        }
+      >
+
+        <DialogContent className="rounded-3xl">
+
+          <DialogHeader>
+
+            <DialogTitle className="text-2xl">
+              Edit Vaccination
+            </DialogTitle>
+
+            <DialogDescription>
+              Update vaccination status.
+            </DialogDescription>
+
           </DialogHeader>
 
           <div className="py-4">
+
             <Select
-              value={selectedStatus}
-              onValueChange={(value: any) => setSelectedStatus(value)}
+              value={
+                selectedStatus
+              }
+
+              onValueChange={(
+                value: any
+              ) =>
+                setSelectedStatus(
+                  value
+                )
+              }
             >
-              <SelectTrigger className="h-11 w-full rounded-xl">
+
+              <SelectTrigger className="h-12 w-full rounded-2xl">
+
                 <SelectValue />
+
               </SelectTrigger>
 
               <SelectContent>
-                <SelectItem value="UPCOMING">Upcoming</SelectItem>
 
-                <SelectItem value="COMPLETED">Completed</SelectItem>
+                <SelectItem value="UPCOMING">
+                  Upcoming
+                </SelectItem>
 
-                <SelectItem value="OVERDUE">Overdue</SelectItem>
+                <SelectItem value="COMPLETED">
+                  Completed
+                </SelectItem>
+
+                <SelectItem value="OVERDUE">
+                  Overdue
+                </SelectItem>
+
               </SelectContent>
+
             </Select>
+
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditOpen(false)}>
+
+            <Button
+              variant="outline"
+
+              onClick={() =>
+                setEditOpen(false)
+              }
+            >
               Cancel
             </Button>
 
             <Button
-              onClick={handleUpdate}
+              onClick={
+                handleUpdate
+              }
+
               disabled={loading}
+
               className="bg-[#7C3AED] hover:bg-[#6D28D9]"
             >
-              {loading ? "Updating..." : "Save Changes"}
+
+              {
+                loading
+                  ? "Updating..."
+                  : "Save Changes"
+              }
+
             </Button>
+
           </DialogFooter>
+
         </DialogContent>
+
       </Dialog>
 
-      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="rounded-2xl">
-          <DialogHeader>
-            <DialogTitle>Delete Vaccination</DialogTitle>
+      <Dialog
+        open={deleteOpen}
 
-            <DialogDescription>This action cannot be undone.</DialogDescription>
+        onOpenChange={
+          setDeleteOpen
+        }
+      >
+
+        <DialogContent className="rounded-3xl">
+
+          <DialogHeader>
+
+            <DialogTitle className="text-2xl">
+              Delete Vaccination
+            </DialogTitle>
+
+            <DialogDescription>
+              This action cannot be undone.
+            </DialogDescription>
+
           </DialogHeader>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteOpen(false)}>
+
+            <Button
+              variant="outline"
+
+              onClick={() =>
+                setDeleteOpen(false)
+              }
+            >
               Cancel
             </Button>
 
             <Button
-              onClick={handleDelete}
+              onClick={
+                handleDelete
+              }
+
               disabled={loading}
+
               className="bg-red-600 hover:bg-red-700"
             >
-              {loading ? "Deleting..." : "Delete"}
+
+              {
+                loading
+                  ? "Deleting..."
+                  : "Delete"
+              }
+
             </Button>
+
           </DialogFooter>
+
         </DialogContent>
+
       </Dialog>
+
+      <RecordVaccinationDialog
+        open={
+          openRecordDialog
+        }
+
+        onOpenChange={
+          setOpenRecordDialog
+        }
+
+        record={record}
+
+        refetchData={
+          refetchData
+        }
+      />
+
     </>
   )
 }

@@ -7,14 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-
-
-
+import { Card, CardContent } from "@/components/ui/card"
 
 import VaccinationTableActions from "./VaccinationTableActions"
+
 import StatusBadge from "../shared/StatusBadge"
+
 import PaginationControls from "../shared/PaginationControls"
 
 interface VaccinationTableProps {
@@ -34,73 +32,169 @@ const VaccinationTable = ({
   refetchData,
 }: VaccinationTableProps) => {
   return (
-    <Card className="overflow-hidden rounded-2xl border border-[#E7E5E4] shadow-sm">
-      <CardHeader className="border-b bg-white">
-        <CardTitle className="text-lg font-semibold text-[#1C1917]">
-          Vaccination Records
-        </CardTitle>
-      </CardHeader>
-
+    <Card className="overflow-hidden rounded-[28px] border border-[#E7E5E4] bg-white shadow-sm">
       <CardContent className="overflow-x-auto p-0">
         <Table>
-          <TableHeader className="sticky top-0 z-10 bg-[#FAFAF9]">
-            <TableRow>
-              <TableHead>Dependent</TableHead>
+          <TableHeader className="bg-[#FAFAF9]">
+            <TableRow className="hover:bg-[#FAFAF9]">
+              <TableHead className="h-14 min-w-60 pl-6 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Dependent Name
+              </TableHead>
 
-              <TableHead>Vaccine</TableHead>
+              <TableHead className="min-w-42.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Guardian
+              </TableHead>
 
-              <TableHead>Due Date</TableHead>
+              <TableHead className="min-w-37.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Vaccine
+              </TableHead>
 
-              <TableHead>Status</TableHead>
+              <TableHead className="min-w-30 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Rec. Age
+              </TableHead>
 
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="min-w-35 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Status
+              </TableHead>
+
+              <TableHead className="min-w-37.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Date Admin.
+              </TableHead>
+
+              <TableHead className="min-w-42.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Administered By
+              </TableHead>
+
+              <TableHead className="min-w-30 pr-6 text-right text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {records.length > 0 ? (
-              records.map((record) => (
-                <TableRow
-                  key={record.id}
-                  className="transition-colors hover:bg-[#FAFAF9]"
-                >
-                  <TableCell className="font-medium">
-                    {record.dependent.fullName}
-                  </TableCell>
+              records.map((record) => {
+                const dependentAvatar = `https://i.pravatar.cc/150?u=${record.dependent.id}`
 
-                  <TableCell>{record.vaccine.name}</TableCell>
+                return (
+                  <TableRow
+                    key={record.id}
+                    className="border-b transition-colors hover:bg-[#FAFAF9]"
+                  >
+                    <TableCell className="pl-6">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`h-12 w-1 rounded-full ${
+                            record.status === "OVERDUE"
+                              ? "bg-red-500"
+                              : record.status === "COMPLETED"
+                                ? "bg-green-500"
+                                : "bg-blue-500"
+                          } `}
+                        />
 
-                  <TableCell>
-                    {new Date(record.dueDate).toLocaleDateString()}
-                  </TableCell>
+                        <img
+                          src={dependentAvatar}
+                          alt="dependent"
+                          className="size-11 rounded-full object-cover"
+                        />
 
-                  <TableCell>
-                    <StatusBadge status={record.status} />
-                  </TableCell>
+                        <div>
+                          <p className="text-[15px] leading-5 font-semibold text-[#1C1917]">
+                            {record.dependent.fullName}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
 
-                  <TableCell className="text-right">
-                    <VaccinationTableActions
-                      id={record.id}
-                      status={record.status}
-                      onSuccess={refetchData}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))
+                    <TableCell>
+                      <p className="text-[14px] font-medium text-[#78716C]">
+                        {record?.dependent?.guardian?.fullName || "N/A"}
+                      </p>
+                    </TableCell>
+
+                    <TableCell>
+                      <p className="text-[15px] font-medium text-[#1C1917]">
+                        {record.vaccine.name}
+                      </p>
+                    </TableCell>
+
+                    <TableCell>
+                      <p className="text-[14px] text-[#78716C]">
+                        {record?.vaccine?.recommendedAge || "N/A"}
+                      </p>
+                    </TableCell>
+
+                    <TableCell>
+                      <StatusBadge status={record.status} />
+                    </TableCell>
+
+                    <TableCell>
+                      <p
+                        className={`text-[14px] font-medium ${
+                          record.status === "OVERDUE"
+                            ? "text-red-500"
+                            : "text-[#78716C]"
+                        } `}
+                      >
+                        {record.status === "OVERDUE"
+                          ? `Expired ${Math.floor(
+                              (new Date().getTime() -
+                                new Date(record.dueDate).getTime()) /
+                                (1000 * 60 * 60 * 24)
+                            )} days ago`
+                          : new Date(record.dueDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+
+                                day: "numeric",
+
+                                year: "numeric",
+                              }
+                            )}
+                      </p>
+                    </TableCell>
+
+                    <TableCell>
+                      <p className="text-[14px] text-[#78716C]">
+                        {typeof record.administeredBy === "object"
+                          ? record.administeredBy?.fullName
+                          : record.administeredBy || "—"}
+                      </p>
+                    </TableCell>
+
+                    <TableCell className="pr-6 text-right">
+                      <VaccinationTableActions
+                        id={record.id}
+                        status={record.status}
+                        onSuccess={refetchData}
+                        record={record}
+                        refetchData={refetchData}
+                      />
+                    </TableCell>
+                  </TableRow>
+                )
+              })
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={5}
-                  className="h-24 text-center text-[#78716C]"
+                  colSpan={8}
+                  className="h-28 text-center text-[#78716C]"
                 >
-                  No records found
+                  No vaccination records found
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
 
-        <div className="border-t p-4">
+        <div className="flex flex-col gap-4 border-t px-6 py-4 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-[#78716C]">
+            Showing 1-
+            {records.length} of {pagination?.total || records.length} records
+          </p>
+
           <PaginationControls
             currentPage={pagination?.page || 1}
             totalPages={pagination?.totalPages || 1}

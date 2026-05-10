@@ -17,6 +17,7 @@ import StaffDashboard from "./pages/staff/StaffDashboard"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import StaffManagement from "./pages/admin/StaffManagement"
 import ProfilePage from "./pages/profile/ProfilePage"
+import StaffVaccinesPage from "./pages/staff/StaffVaccinePage"
 
 export function App() {
   return (
@@ -46,6 +47,7 @@ export function App() {
         <Route element={<ProtectedRoute allowedRole="STAFF" />}>
           <Route element={<StaffLayout />}>
             <Route path="/staff/dashboard" element={<StaffDashboard />} />
+            <Route path="/staff/vaccines" element={<StaffVaccinesPage />} />
             <Route path="/staff/profile" element={<ProfilePage />} />
           </Route>
         </Route>

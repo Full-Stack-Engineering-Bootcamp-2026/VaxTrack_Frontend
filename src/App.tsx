@@ -55,7 +55,7 @@ export function App() {
             <Route path="/staff/vaccines" element={<StaffVaccinesPage />} />
             <Route path="/staff/overdue" element={<OverdueVaccinationsPage />} />
             <Route path="/staff/reports" element={<StaffReportsPage />} />
-            <Route path="/staff/vaccination-catalogue" element={<VaccineAddPage/>} />
+            <Route path="/staff/vaccination-add" element={<VaccineAddPage/>} />
             <Route path="/staff/vaccine-catalog"element={<VaccineCatalogueListPage />}/>
             <Route path="/staff/profile" element={<ProfilePage />} />
           </Route>

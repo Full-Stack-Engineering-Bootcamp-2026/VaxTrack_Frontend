@@ -25,6 +25,7 @@ import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Skeleton } from "@/components/ui/skeleton"
+import { useNavigate } from "react-router-dom"
 
 interface UserProfile {
   id: number
@@ -279,6 +280,8 @@ const ProfilePage = () => {
     }
   }
 
+  const navigate = useNavigate()
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] p-4 md:p-6">
@@ -379,7 +382,10 @@ const ProfilePage = () => {
                     {updating ? "Saving..." : "Edit Profile"}
                   </Button>
 
-                  <Button className="h-11 rounded-xl bg-[#DDD6FE] px-6 text-[#7C3AED] hover:bg-[#C4B5FD]">
+                  <Button
+                    onClick={() => navigate("/forgot-password")}
+                    className="h-11 rounded-xl bg-[#DDD6FE] px-6 text-[#7C3AED] hover:bg-[#C4B5FD]"
+                  >
                     Change Password
                   </Button>
                 </div>

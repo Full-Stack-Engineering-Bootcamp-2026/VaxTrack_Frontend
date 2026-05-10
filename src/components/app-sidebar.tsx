@@ -44,8 +44,8 @@ const menuItems = [
     {
         title: "Vaccinations",
         icon: ClipboardList,
-        adminPath: "/admin/vaccinations",
-        staffPath: "/staff/vaccinations",
+        adminPath: "/admin/vaccines",
+        staffPath: "/staff/vaccines",
     },
     {
         title: "Overdue Overview",

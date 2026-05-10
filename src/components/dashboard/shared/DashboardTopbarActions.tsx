@@ -57,7 +57,7 @@ const DashboardTopbarActions = ({
 
       <Button
         className="h-11 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9]"
-        onClick={() => navigate("/staff/vaccines")}
+        onClick={() => navigate("/staff/vaccination-add")}
       >
         <Plus className="size-4" />
         Record Vaccine

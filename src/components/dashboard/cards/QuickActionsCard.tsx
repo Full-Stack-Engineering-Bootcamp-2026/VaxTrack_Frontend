@@ -1,33 +1,62 @@
 import { Syringe, FileText, Users, AlertTriangle } from "lucide-react"
 
+import { useNavigate } from "react-router-dom"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { Button } from "@/components/ui/button"
 
-const actions = [
-  {
-    title: "Record Vaccine",
-    description: "Add a new vaccination record",
-    icon: Syringe,
-  },
-  {
-    title: "Generate Report",
-    description: "Export vaccination reports",
-    icon: FileText,
-  },
-  {
-    title: "Manage Dependents",
-    description: "View dependent records",
-    icon: Users,
-  },
-  {
-    title: "Overdue Cases",
-    description: "Review pending vaccinations",
-    icon: AlertTriangle,
-  },
-]
+import { exportVaccinationReport } from "@/utils/exportVaccinationReport"
 
-const QuickActionsCard = () => {
+interface QuickActionsCardProps {
+  records?: any[]
+}
+
+const QuickActionsCard = ({ records = [] }: QuickActionsCardProps) => {
+  const navigate = useNavigate()
+
+  const actions = [
+    {
+      title: "Record Vaccine",
+
+      description: "Add a new vaccination record",
+
+      icon: Syringe,
+
+      action: () => navigate("/staff/vaccines"),
+    },
+
+    {
+      title: "Generate Report",
+
+      description: "Export vaccination reports",
+
+      icon: FileText,
+
+      action: () => exportVaccinationReport(records),
+    },
+
+    {
+      title: "Manage Dependents",
+
+      description: "View dependent records",
+
+      icon: Users,
+
+      action: () => navigate("/staff/dependents"),
+    },
+
+    {
+      title: "Overdue Cases",
+
+      description: "Review pending vaccinations",
+
+      icon: AlertTriangle,
+
+      action: () => navigate("/staff/vaccines"),
+    },
+  ]
+
   return (
     <Card className="rounded-2xl border border-[#E7E5E4] shadow-sm">
       <CardHeader>
@@ -44,6 +73,7 @@ const QuickActionsCard = () => {
             <Button
               key={action.title}
               variant="outline"
+              onClick={action.action}
               className="flex h-auto items-start justify-start gap-4 rounded-2xl border-[#E7E5E4] p-4 text-left hover:bg-[#FAFAF9]"
             >
               <div className="flex size-11 items-center justify-center rounded-xl bg-[#F5F3FF] text-[#7C3AED]">

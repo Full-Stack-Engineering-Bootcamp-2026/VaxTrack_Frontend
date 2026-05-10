@@ -57,8 +57,6 @@ const StaffVaccinesPage = () => {
 
   const [fromDate, setFromDate] = useState("")
 
-  const [toDate, setToDate] = useState("")
-
   const [vaccines, setVaccines] = useState<any[]>([])
 
   const debouncedSearch = useDebounce(search, 500)
@@ -149,12 +147,6 @@ const StaffVaccinesPage = () => {
       )
     }
 
-    if (toDate) {
-      filtered = filtered.filter(
-        (record) => new Date(record.dueDate) <= new Date(toDate)
-      )
-    }
-
     setFilteredRecords(filtered)
   }
 
@@ -216,7 +208,7 @@ const StaffVaccinesPage = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by dependent..."
-                className="h-11 w-[260px] rounded-2xl border-[#E9E1DB] bg-[#FFF8F4] pl-10"
+                className="h-11 w-65 rounded-2xl border-[#E9E1DB] bg-[#FFF8F4] pl-10"
               />
             </div>
 

@@ -56,8 +56,8 @@ export function App() {
               path="/admin/staff-management"
               element={<StaffManagement />}
             />
+            <Route path="/admin/profile" element={<ProfilePage />} />
           </Route>
-          <Route path="/admin/profile" element={<ProfilePage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

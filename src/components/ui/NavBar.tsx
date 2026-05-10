@@ -62,7 +62,7 @@ const Navbar = () => {
         }
     };
     return (
-        <nav className="flex bg-sidebar px-3 sticky top-0  h-12 items-center border-b">
+        <nav className="flex bg-sidebar px-3 sticky top-0  h-12 z-10 items-center border-b">
             {user?.role !== "GUARDIAN" &&
                 <div className="md:hidden flex-1">
                     <SidebarTrigger />

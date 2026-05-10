@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import axios from "axios"
 
-import { Syringe, AlertTriangle, ShieldCheck, Clock3 } from "lucide-react"
+import { AlertTriangle, Clock3, ShieldCheck, Syringe } from "lucide-react"
 
 import StatsCard from "@/components/dashboard/stats/StatsCard"
 
@@ -47,7 +47,9 @@ const StaffDashboard = () => {
 
   const [statusData, setStatusData] = useState({
     completed: 0,
+
     overdue: 0,
+
     upcoming: 0,
   })
 
@@ -89,14 +91,26 @@ const StaffDashboard = () => {
             }
           ),
         ])
-        
-      setRecords(vaccinationResponse.data.data.data)
 
-      setPagination(vaccinationResponse.data.data.pagination)
+      const vaccinationData = vaccinationResponse.data?.data?.data || []
 
-      setComplianceRate(complianceResponse.data.data.compliancePercentage)
+      setRecords(vaccinationData)
 
-      setStatusData(statusResponse.data.data)
+      setPagination(vaccinationResponse.data?.data?.pagination)
+
+      setComplianceRate(
+        complianceResponse.data?.data?.compliancePercentage || 0
+      )
+
+      setStatusData(
+        statusResponse.data?.data || {
+          completed: 0,
+
+          overdue: 0,
+
+          upcoming: 0,
+        }
+      )
     } catch (error) {
       console.error(error)
     } finally {
@@ -108,23 +122,25 @@ const StaffDashboard = () => {
     fetchDashboardData()
   }, [page])
 
-  const filteredRecords = records.filter((record: any) => {
-    const matchesSearch = record.dependent.fullName
-      .toLowerCase()
-      .includes(debouncedSearch.toLowerCase())
+  const filteredRecords = useMemo(() => {
+    return records.filter((record: any) => {
+      const matchesSearch = record?.dependent?.fullName
+        ?.toLowerCase()
+        .includes(debouncedSearch.toLowerCase())
 
-    const matchesStatus = status === "ALL" ? true : record.status === status
+      const matchesStatus = status === "ALL" ? true : record.status === status
 
-    return matchesSearch && matchesStatus
-  })
+      return matchesSearch && matchesStatus
+    })
+  }, [records, debouncedSearch, status])
 
   return (
-    <div className="w-full bg-[#FAFAF9] p-4 md:p-6">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <div className="min-h-screen overflow-x-hidden bg-[#FAFAF9]">
+      <div className="mx-auto flex w-full max-w-450 flex-col gap-6 px-3 py-4 sm:px-4 md:px-6 2xl:px-8">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <DashboardGreeting />
 
-          <DashboardTopbarActions />
+          <DashboardTopbarActions records={filteredRecords} />
         </div>
 
         {loading ? (
@@ -140,56 +156,58 @@ const StaffDashboard = () => {
             <StatsCard
               title="Completed"
               value={statusData.completed}
-              subtitle="
-                      Successfully administered
-                    "
+              subtitle="Successfully administered"
               icon={<Syringe className="size-5" />}
             />
 
             <StatsCard
               title="Overdue"
               value={statusData.overdue}
-              subtitle="
-                      Requires attention
-                    "
+              subtitle="Requires attention"
               icon={<AlertTriangle className="size-5" />}
             />
 
             <StatsCard
               title="Compliance"
               value={`${complianceRate}%`}
-              subtitle="
-                      Vaccination completion
-                    "
+              subtitle="Vaccination completion"
               icon={<ShieldCheck className="size-5" />}
             />
 
             <StatsCard
               title="Upcoming"
               value={statusData.upcoming}
-              subtitle="
-                      Scheduled vaccinations
-                    "
+              subtitle="Scheduled vaccinations"
               icon={<Clock3 className="size-5" />}
             />
           </div>
         )}
 
-        <ComplianceProgressCard complianceRate={complianceRate} />
+        <div className="grid auto-rows-fr grid-cols-1 gap-6 xl:grid-cols-[minmax(320px,380px)_1fr] 2xl:grid-cols-[380px_1fr]">
+          <div className="h-full">
+            <ComplianceProgressCard complianceRate={complianceRate} />
+          </div>
 
-        <VaccinationTrendChart />
+          <div className="h-full min-w-0">
+            <VaccinationTrendChart records={records} />
+          </div>
+        </div>
 
-        <QuickActionsCard />
+        <div className="w-full">
+          <QuickActionsCard records={filteredRecords} />
+        </div>
 
-        <VaccinationFilterBar
-          search={search}
-          onSearchChange={setSearch}
-          status={status}
-          onStatusChange={setStatus}
-        />
+        <div className="w-full">
+          <VaccinationFilterBar
+            search={search}
+            onSearchChange={setSearch}
+            status={status}
+            onStatusChange={setStatus}
+          />
+        </div>
 
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_340px]">
-          <div>
+        <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="min-w-0 overflow-hidden">
             {loading ? (
               <VaccinationTableSkeleton />
             ) : (
@@ -202,7 +220,9 @@ const StaffDashboard = () => {
             )}
           </div>
 
-          <RecentActivitiesCard />
+          <div className="min-w-0">
+            <RecentActivitiesCard />
+          </div>
         </div>
       </div>
     </div>

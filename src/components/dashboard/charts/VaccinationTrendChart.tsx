@@ -1,4 +1,3 @@
-
 import { TrendingUp } from "lucide-react"
 
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
@@ -19,41 +18,41 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 
-const chartData = [
-  {
-    month: "January",
-    vaccinations: 40,
-  },
-  {
-    month: "February",
-    vaccinations: 58,
-  },
-  {
-    month: "March",
-    vaccinations: 80,
-  },
-  {
-    month: "April",
-    vaccinations: 65,
-  },
-  {
-    month: "May",
-    vaccinations: 92,
-  },
-  {
-    month: "June",
-    vaccinations: 110,
-  },
-]
+interface VaccinationTrendChartProps {
+  records?: any[]
+}
 
 const chartConfig = {
   vaccinations: {
     label: "Vaccinations",
+
     color: "#7C3AED",
   },
 } satisfies ChartConfig
 
-const VaccinationTrendChart = () => {
+const VaccinationTrendChart = ({
+  records = [],
+}: VaccinationTrendChartProps) => {
+  const monthlyData = records.reduce((acc: any, record: any) => {
+    const month = new Date(record.dueDate).toLocaleString("default", {
+      month: "long",
+    })
+
+    const existing = acc.find((item: any) => item.month === month)
+
+    if (existing) {
+      existing.vaccinations += 1
+    } else {
+      acc.push({
+        month,
+
+        vaccinations: 1,
+      })
+    }
+
+    return acc
+  }, [])
+
   return (
     <Card className="rounded-2xl border border-[#E7E5E4] shadow-sm">
       <CardHeader>
@@ -66,7 +65,7 @@ const VaccinationTrendChart = () => {
         <ChartContainer config={chartConfig} className="h-80 w-full">
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={monthlyData}
             margin={{
               left: 12,
               right: 12,
@@ -106,7 +105,7 @@ const VaccinationTrendChart = () => {
 
       <CardFooter className="flex items-center gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium">
-          Trending up by 18%
+          Trending vaccination activity
           <TrendingUp className="size-4" />
         </div>
       </CardFooter>

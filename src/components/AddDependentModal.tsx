@@ -1,7 +1,7 @@
 import { useForm, useWatch } from "react-hook-form"
 import { joiResolver } from "@hookform/resolvers/joi"
 import Joi from "joi"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
     AlertDialog,
     AlertDialogCancel,
@@ -90,7 +90,8 @@ type FormData = {
 
 export function AddDependentModal({ children }: props) {
     const { token } = useSelector((state: RootState) => state.auth);
-    const [open,setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const queryClient = useQueryClient();
     const createDependentMutation = useMutation({
         mutationFn: async (data: FormData) => {
             const response = await axios.post(
@@ -106,6 +107,9 @@ export function AddDependentModal({ children }: props) {
         },
 
         onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["guardianDashboard"],
+            })
             toast.success("Dependent added successfully");
             setOpen(false);
         },

@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import axios from "axios"
 
-import { CalendarDays, ShieldCheck, X } from "lucide-react"
+import { ShieldCheck } from "lucide-react"
 
 import { toast } from "react-toastify"
 
@@ -111,7 +111,7 @@ const RecordVaccinationDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed top-[50%] left-[50%] w-[92vw] translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-[28px] border-0 bg-white p-0 sm:w-full  sm:max-w-[720px]">
+      <DialogContent className="fixed top-[50%] left-[50%] w-[92vw] translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-[28px] border-0 bg-white p-0 sm:w-full sm:max-w-180">
         <DialogHeader className="border-b bg-[#FAFAF9] px-6 py-5">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-[22px] font-semibold text-[#1C1917]">
@@ -121,9 +121,7 @@ const RecordVaccinationDialog = ({
             <button
               onClick={() => onOpenChange(false)}
               className="text-[#78716C] transition-all hover:text-[#1C1917]"
-            >
-              
-            </button>
+            ></button>
           </div>
         </DialogHeader>
 
@@ -174,9 +172,8 @@ const RecordVaccinationDialog = ({
                   name="administeredDate"
                   value={formData.administeredDate}
                   onChange={handleChange}
-                  className="h-12  rounded-2xl border-[#E7E5E4] bg-[#FAFAF9] pr-12 text-[15px]"
+                  className="h-12 rounded-2xl border-[#E7E5E4] bg-[#FAFAF9] pr-12 text-[15px]"
                 />
-
               </div>
             </div>
 

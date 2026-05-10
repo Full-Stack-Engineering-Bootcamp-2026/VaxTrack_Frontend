@@ -78,14 +78,10 @@ const Navbar = () => {
                 <ul className="flex gap-5 text-[14px] text-[#57534E]">
                     {navItems
                         .filter((item) => {
-                            if (
-                                (item.label === "Staff Management" ||
-                                    item.label === "Reports") &&
-                                user?.role !== "ADMIN"
-                            ) {
+                            if ((item.label === "Staff Management" ||item.label === "Reports") && user?.role !== "ADMIN") 
                                 return false
-                            }
-
+                            if((item.label === "My Dependents" && user?.role !== "USER"))
+                                return false
                             return true
                         })
                         .map((item) => (

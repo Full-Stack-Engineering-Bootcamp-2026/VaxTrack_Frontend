@@ -176,7 +176,8 @@ const DependentCard = ({ dependent }: Props) => {
                 </div>
                 <div className="mt-5 space-y-2">
 
-                    <Button onClick={() => navigate(`/guardian/vaccination-schedule/${dependent.id}`)} className="h-10 w-full rounded-xl bg-[#7C3AED] text-white hover:bg-[#6D28D9]">
+                    <Button onClick={() => navigate(
+                        `/guardian/vaccination-schedule/${dependent.id}?name=${dependent.name}`)} className="h-10 w-full rounded-xl bg-[#7C3AED] text-white hover:bg-[#6D28D9]">
                         View Schedule
                     </Button>
 

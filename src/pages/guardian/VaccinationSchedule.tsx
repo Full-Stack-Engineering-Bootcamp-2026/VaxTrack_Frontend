@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/stores/store"
@@ -18,6 +18,8 @@ interface VaccinationRecord {
 }
 const VaccinationSchedulePage = () => {
     const { dependentId } = useParams()
+    const [searchParams] = useSearchParams();
+    const dependentName = searchParams.get("name")
     const { token } = useSelector(
         (state: RootState) => state.auth
     )
@@ -35,7 +37,6 @@ const VaccinationSchedulePage = () => {
                     },
                 }
             )
-
             return response.data.data
         },
     })
@@ -46,16 +47,14 @@ const VaccinationSchedulePage = () => {
             </div>
         )
     }
-    const dependent = data?.dependent
     const records: VaccinationRecord[] =
         data?.data || []
-
     return (
         <div className="min-h-screen bg-[#FAFAF9] p-8">
             <div className="mx-auto max-w-5xl space-y-8">
                 <div>
                     <h1 className="text-4xl font-bold text-[#1C1917]">
-                        {dependent?.fullName}'s Vaccination Schedule
+                        {dependentName}'s Vaccination Schedule
                     </h1>
 
                     <p className="mt-2 text-sm text-[#78716C]">

@@ -8,6 +8,22 @@ import {
     Trash2,
     Pencil,
 } from "lucide-react";
+import axios from "axios"
+
+import {
+    useMutation,
+    useQueryClient,
+} from "@tanstack/react-query"
+
+import {
+    useSelector,
+} from "react-redux"
+
+import type {
+    RootState,
+} from "@/redux/stores/store"
+
+import { toast } from "react-toastify"
 
 type Dependent = {
     name: string;
@@ -25,6 +41,49 @@ type Props = {
 };
 
 const DependentCard = ({ dependent }: Props) => {
+    const queryClient =
+        useQueryClient()
+
+    const { token } = useSelector(
+        (state: RootState) =>
+            state.auth
+    )
+    const deleteMutation =
+        useMutation({
+
+            mutationFn: async () => {
+
+                return axios.delete(
+                    `http://localhost:3000/api/dependents/${dependent.id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    }
+                )
+            },
+
+            onSuccess: () => {
+
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        "guardianDashboard",
+                    ],
+                })
+
+                toast.success(
+                    "Dependent deleted successfully"
+                )
+            },
+
+            onError: () => {
+
+                toast.error(
+                    "Failed to delete dependent"
+                )
+            },
+        })
     return (
         <Card
             className={`w-full rounded-2xl border-l-4 ${dependent.borderColor} border-l-4 bg-[#E7E5E4] shadow-sm`}
@@ -130,6 +189,9 @@ const DependentCard = ({ dependent }: Props) => {
                         <Button
                             variant="outline"
                             className="rounded-xl border-[#FECACA] text-red-500 hover:bg-red-50 hover:text-red-600"
+                            onClick={() =>
+                                deleteMutation.mutate()
+                            }
                         >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete

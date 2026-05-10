@@ -89,12 +89,12 @@ const StaffDashboard = () => {
             }
           ),
         ])
-
+        
       setRecords(vaccinationResponse.data.data.data)
 
       setPagination(vaccinationResponse.data.data.pagination)
 
-      setComplianceRate(complianceResponse.data.data.complianceRate)
+      setComplianceRate(complianceResponse.data.data.compliancePercentage)
 
       setStatusData(statusResponse.data.data)
     } catch (error) {

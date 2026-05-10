@@ -104,7 +104,7 @@ const Navbar = () => {
             .filter((item) => {
               if (
                 (item.label === "Staff Management" ||
-                  item.label === "Reports") || item.label === "Vaccinations" &&
+                  item.label === "Reports" || item.label === "Vaccinations") &&
                 user?.role !== "ADMIN"
               ) {
                 return false

@@ -32,9 +32,9 @@ export function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
+         <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         <Route element={<ProtectedRoute allowedRole="GUARDIAN" />}>
           <Route element={<GuardianLayout />}>
             <Route path="/guardian/dashboard" element={<GuardianDashboard />} />

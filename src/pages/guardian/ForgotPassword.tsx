@@ -55,7 +55,7 @@ const ForgotPassword = () => {
 
     return (
         <PasswordChangeLayout
-            title="Forgot Password"
+            title="Forgot Password?"
             subtitle="Enter your registered email. We'll send you a reset link."
             backPath="/login"
             bottomLinkText="Back to Login"

@@ -386,7 +386,7 @@ const ProfilePage = () => {
                     onClick={() => navigate("/forgot-password")}
                     className="h-11 rounded-xl bg-[#DDD6FE] px-6 text-[#7C3AED] hover:bg-[#C4B5FD]"
                   >
-                    Change Password
+                    Reset Password
                   </Button>
                 </div>
               </div>

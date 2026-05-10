@@ -9,10 +9,6 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-
-
-
-
 import VaccinationTableActions from "./VaccinationTableActions"
 import StatusBadge from "../shared/StatusBadge"
 import PaginationControls from "../shared/PaginationControls"
@@ -83,6 +79,8 @@ const VaccinationTable = ({
                       id={record.id}
                       status={record.status}
                       onSuccess={refetchData}
+                      record={record}
+                      refetchData={refetchData}
                     />
                   </TableCell>
                 </TableRow>

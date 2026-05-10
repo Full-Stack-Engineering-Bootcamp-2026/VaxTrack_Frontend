@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   User,
   Users,
-  X,
 } from "lucide-react"
 
 import { toast } from "react-toastify"
@@ -23,27 +22,24 @@ import { Input } from "@/components/ui/input"
 
 import { Label } from "@/components/ui/label"
 
-import { Skeleton } from "@/components/ui/skeleton"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface UserProfile {
   id: number
-
   fullName: string
-
   email: string
-
   phone: string
-
   imageUrl: string | null
-
   role: string
-
   createdAt: string
 }
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null)
+
+  const [dependents, setDependents] = useState<any[]>([])
 
   const [loading, setLoading] = useState(true)
 
@@ -59,15 +55,37 @@ const ProfilePage = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const getToken = () => {
+  const getPersistedUser = () => {
     const persistedState = localStorage.getItem("persist:root")
 
     const parsedState = persistedState ? JSON.parse(persistedState) : null
 
     const auth = parsedState?.auth ? JSON.parse(parsedState.auth) : null
 
+    return auth
+  }
+
+  const getToken = () => {
+    const auth = getPersistedUser()
+
     return auth?.token
   }
+
+  useEffect(() => {
+    const persistedUser = getPersistedUser()?.user
+
+    if (persistedUser) {
+      setProfile(persistedUser)
+
+      setFormData({
+        fullName: persistedUser.fullName || "",
+
+        phone: persistedUser.phone || "",
+
+        imageUrl: persistedUser.imageUrl || "",
+      })
+    }
+  }, [])
 
   const fetchProfile = async () => {
     try {
@@ -83,6 +101,27 @@ const ProfilePage = () => {
       )
 
       const user = response.data.data
+
+      if (user.role === "GUARDIAN") {
+        const dependentResponse = await axios.get(
+          "http://localhost:3000/api/dependents",
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+        )
+
+        const dependentData = dependentResponse.data.data
+
+        setDependents(
+          Array.isArray(dependentData)
+            ? dependentData
+            : Array.isArray(dependentData.data)
+              ? dependentData.data
+              : []
+        )
+      }
 
       setProfile(user)
 
@@ -109,6 +148,7 @@ const ProfilePage = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
+
       [e.target.name]: e.target.value,
     })
   }
@@ -142,8 +182,13 @@ const ProfilePage = () => {
       setFormData({
         ...formData,
 
-        imageUrl: response.data.data.url,
+        imageUrl: response.data.data.fileName,
       })
+
+      setProfile((prev) => ({
+        ...prev!,
+        imageUrl: response.data.data.imageUrl,
+      }))
 
       toast.success("Profile image uploaded")
     } catch (error) {
@@ -152,27 +197,6 @@ const ProfilePage = () => {
       toast.error("Image upload failed")
     } finally {
       setImageUploading(false)
-    }
-  }
-
-  const handleRemoveImage = async () => {
-    try {
-      await axios.delete("http://localhost:3000/api/users/profile-temp", {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      })
-
-      setFormData({
-        ...formData,
-        imageUrl: "",
-      })
-
-      toast.success("Image removed")
-    } catch (error) {
-      console.error(error)
-
-      toast.error("Failed to remove image")
     }
   }
 
@@ -198,9 +222,54 @@ const ProfilePage = () => {
         }
       )
 
-      toast.success("Profile updated successfully")
+      const refreshedProfile = await axios.get(
+        "http://localhost:3000/api/users/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      )
 
-      fetchProfile()
+      const updatedUser = refreshedProfile.data.data
+
+      setProfile(updatedUser)
+
+      setFormData({
+        fullName: updatedUser.fullName,
+
+        phone: updatedUser.phone,
+
+        imageUrl: updatedUser.imageUrl || "",
+      })
+
+      const persistedState = localStorage.getItem("persist:root")
+
+      if (persistedState) {
+        const parsedState = JSON.parse(persistedState)
+
+        const auth = JSON.parse(parsedState.auth)
+
+        auth.user = {
+          ...auth.user,
+
+          fullName: updatedUser.fullName,
+
+          phone: updatedUser.phone,
+
+          imageUrl: updatedUser.imageUrl,
+        }
+
+        parsedState.auth = JSON.stringify(auth)
+
+        localStorage.setItem(
+          "persist:root",
+
+          JSON.stringify(parsedState)
+        )
+      }
+
+      toast.success("Profile updated successfully")
     } catch (error) {
       console.error(error)
 
@@ -244,11 +313,11 @@ const ProfilePage = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-[320px_1fr]">
-          <Card className="rounded-3xl border border-[#E7E5E4] shadow-sm">
+          <Card className="rounded-3xl border border-[#E7E5E4] bg-[#F5F5F4] shadow-sm">
             <CardContent className="flex flex-col items-center justify-center gap-5 p-8">
               <div className="relative">
                 <Avatar className="size-32 border-4 border-white shadow-lg">
-                  <AvatarImage src={formData.imageUrl} />
+                  <AvatarImage src={profile?.imageUrl || undefined} />
 
                   <AvatarFallback className="text-3xl">
                     {profile?.fullName?.charAt(0)}
@@ -263,7 +332,7 @@ const ProfilePage = () => {
                 </button>
               </div>
 
-              <div className="rounded-full bg-[#F5F3FF] px-4 py-1.5">
+              <div className="rounded-full bg-[#E9D5FF] px-4 py-1.5">
                 <p className="text-sm font-medium text-[#7C3AED]">
                   {profile?.role}
                 </p>
@@ -277,27 +346,14 @@ const ProfilePage = () => {
                 onChange={handleImageUpload}
               />
 
-              <div className="flex w-full flex-col gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={imageUploading}
-                  className="h-11 rounded-xl"
-                >
-                  {imageUploading ? "Uploading..." : "Upload Photo"}
-                </Button>
-
-                {formData.imageUrl && (
-                  <Button
-                    variant="destructive"
-                    onClick={handleRemoveImage}
-                    className="h-11 rounded-xl"
-                  >
-                    <X className="mr-2 size-4" />
-                    Remove Photo
-                  </Button>
-                )}
-              </div>
+              <Button
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={imageUploading}
+                className="h-11 w-full rounded-xl"
+              >
+                {imageUploading ? "Uploading..." : "Upload Photo"}
+              </Button>
 
               <p className="text-center text-xs text-[#A8A29E]">
                 JPG, GIF or PNG. Max size of 800K
@@ -305,7 +361,7 @@ const ProfilePage = () => {
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden rounded-3xl border border-[#E7E5E4] shadow-sm">
+          <Card className="relative overflow-hidden rounded-3xl border border-[#E7E5E4] bg-[#F5F5F4] shadow-sm">
             <div className="absolute top-0 left-0 h-full w-2 bg-[#7C3AED]" />
 
             <CardContent className="space-y-8 p-8">
@@ -323,7 +379,7 @@ const ProfilePage = () => {
                     {updating ? "Saving..." : "Edit Profile"}
                   </Button>
 
-                  <Button variant="secondary" className="h-11 rounded-xl px-6">
+                  <Button className="h-11 rounded-xl bg-[#DDD6FE] px-6 text-[#7C3AED] hover:bg-[#C4B5FD]">
                     Change Password
                   </Button>
                 </div>
@@ -340,7 +396,7 @@ const ProfilePage = () => {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleInputChange}
-                      className="h-12 rounded-xl pl-10"
+                      className="h-12 rounded-xl border-[#E7E5E4] bg-white pl-10"
                     />
                   </div>
                 </div>
@@ -354,7 +410,7 @@ const ProfilePage = () => {
                     <Input
                       value={profile?.email}
                       disabled
-                      className="h-12 rounded-xl pl-10"
+                      className="h-12 rounded-xl border-[#E7E5E4] bg-white pl-10"
                     />
                   </div>
                 </div>
@@ -368,7 +424,7 @@ const ProfilePage = () => {
                     <Input
                       value={profile?.role}
                       disabled
-                      className="h-12 rounded-xl pl-10"
+                      className="h-12 rounded-xl border-[#E7E5E4] bg-white pl-10"
                     />
                   </div>
                 </div>
@@ -383,7 +439,7 @@ const ProfilePage = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="h-12 rounded-xl pl-10"
+                      className="h-12 rounded-xl border-[#E7E5E4] bg-white pl-10"
                     />
                   </div>
                 </div>
@@ -404,7 +460,7 @@ const ProfilePage = () => {
                       day: "numeric",
                     })}
                     disabled
-                    className="h-12 rounded-xl pl-10"
+                    className="h-12 rounded-xl border-[#E7E5E4] bg-white pl-10"
                   />
                 </div>
               </div>
@@ -420,7 +476,6 @@ const ProfilePage = () => {
 
                     <p className="mt-1 text-sm leading-6 text-[#78716C]">
                       Your account is fully verified for medical record access.
-                      Last security audit performed recently.
                     </p>
                   </div>
                 </div>
@@ -428,6 +483,60 @@ const ProfilePage = () => {
             </CardContent>
           </Card>
         </div>
+
+        {profile?.role === "GUARDIAN" && (
+          <div className="space-y-5">
+            <h2 className="text-3xl font-bold text-[#1C1917]">
+              Linked Dependents
+            </h2>
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {Array.isArray(dependents) &&
+                dependents.map((dependent, index) => (
+                  <div
+                    key={dependent.id}
+                    className="flex items-center justify-between rounded-2xl border border-[#E7E5E4] bg-[#F5F5F4] p-5 transition-all hover:border-[#DDD6FE] hover:shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={`https://i.pravatar.cc/150?img=${index + 10}`}
+                        alt="dependent"
+                        className="size-12 rounded-full object-cover"
+                      />
+
+                      <div>
+                        <h3 className="text-sm font-semibold text-[#1C1917]">
+                          {dependent.fullName}
+                        </h3>
+
+                        <p
+                          className={`mt-1 text-xs ${
+                            dependent.isVaccinated
+                              ? "text-[#16A34A]"
+                              : "text-[#DC2626]"
+                          } `}
+                        >
+                          {dependent.isVaccinated
+                            ? "● Fully Vaccinated"
+                            : "● Vaccination Pending"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className="text-[#78716C]">›</span>
+                  </div>
+                ))}
+
+              <button
+                onClick={() => (window.location.href = "/guardian/dashboard")}
+                className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-[#D6D3D1] bg-[#F5F5F4] p-5 text-sm font-medium text-[#78716C] transition-all hover:border-[#7C3AED] hover:text-[#7C3AED]"
+              >
+                <span className="text-lg">+</span>
+                Add Dependent
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

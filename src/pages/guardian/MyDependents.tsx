@@ -1,52 +1,31 @@
 import axios from "axios"
-
 import { useQuery } from "@tanstack/react-query"
-
 import { useSelector } from "react-redux"
-
 import type { RootState } from "@/redux/stores/store"
 
 import AddDependentCard from "@/components/AddDependentCard"
-
 import { AddDependentModal } from "@/components/AddDependentModal"
-
 import DependentCard from "@/components/DependentCard"
-
-import HealthInsightsCard from "@/components/HealthInsightsCard"
-
-
+import { Button } from "@/components/ui/button"
 import MedicalTipCard from "@/components/ui/MedicalTipCard"
 
-import { Button } from "@/components/ui/button"
-
 import { Loader2, PlusCircle } from "lucide-react"
-import NearbyClinicCard from "@/components/HospitalCard"
 
 interface DependentStats {
-
     progress: number
-
     completed: number
-
     upcoming: number
-
     overdue: number
 }
 
 interface BackendDependent {
-
     id: number
-
     fullName: string
-
     dateOfBirth: string
-
     gender: string
-
     stats: DependentStats
 }
-
-const GuardianDashboard = () => {
+const MyDependents = () => {
 
     const { token } = useSelector(
         (state: RootState) => state.auth
@@ -93,12 +72,16 @@ const GuardianDashboard = () => {
                 const years =
                     Math.floor(ageInMonths / 12)
 
-                const months = ageInMonths % 12
+                const months =
+                    ageInMonths % 12
 
                 return {
+
                     id: dependent.id,
+
                     name:
                         dependent.fullName,
+
                     dob:
                         dob.toLocaleDateString(
                             "en-IN",
@@ -108,18 +91,25 @@ const GuardianDashboard = () => {
                                 year: "numeric",
                             }
                         ),
-                    age: years > 0 ? `${years} Years Old` : `${months} Months Old`,
-                    progress: dependent.stats.progress,
-                    completed: dependent.stats.completed,
-                    upcoming: dependent.stats.upcoming,
-                    overdue: dependent.stats.overdue,
+
+                    age:
+                        years > 0
+                            ? `${years} Years Old`
+                            : `${months} Months Old`,
+                    progress:
+                        dependent.stats.progress,
+                    completed:
+                        dependent.stats.completed,
+                    upcoming:
+                        dependent.stats.upcoming,
+                    overdue:
+                        dependent.stats.overdue,
                     borderColor: dependent.stats.progress > 50 ? "border-l-green-500" : "border-l-red-500"
                 }
             }
         ) || []
 
     return (
-
         <div className="min-h-screen bg-[#FAFAF9] px-8 py-8 space-y-10">
 
             <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -127,17 +117,13 @@ const GuardianDashboard = () => {
                 <div>
 
                     <h1 className="text-3xl font-bold text-[#1C1917] md:text-4xl">
-
                         My Dependents
-
                     </h1>
 
                     <p className="mt-2 max-w-2xl text-sm leading-6 text-[#78716C]">
-
                         Manage and monitor the immunization progress
                         of your family members in one centralized,
                         secure place.
-
                     </p>
 
                 </div>
@@ -166,29 +152,17 @@ const GuardianDashboard = () => {
 
             ) : (
 
-                <div className="grid  items-start grid-cols-1 gap-6 xl:grid-cols-[1fr_250px]">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
+                    {dependents.map((dependent: any) => (
 
-                        {dependents.map((dependent: any) => (
+                        <DependentCard
+                            key={dependent.id}
+                            dependent={dependent}
+                        />
+                    ))}
 
-                            <DependentCard
-                                key={dependent.id}
-                                dependent={dependent}
-                            />
-                        ))}
-
-                        <AddDependentCard />
-
-                    </div>
-
-                    <div className="space-y-6">
-
-                        <HealthInsightsCard />
-
-                        <NearbyClinicCard />
-
-                    </div>
+                    <AddDependentCard />
 
                 </div>
             )}
@@ -199,4 +173,4 @@ const GuardianDashboard = () => {
     )
 }
 
-export default GuardianDashboard
+export default MyDependents

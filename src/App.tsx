@@ -4,7 +4,7 @@ import CreateAccount from "./pages/guardian/CreateAccount"
 import GuardianLayout from "./components/layouts/GuardianLayout"
 import StaffLayout from "./components/layouts/StaffLayout"
 import AdminLayout from "./components/layouts/AdminLayout"
-import GuardianDashboard from "./pages/guardian/GuardianDashboard"
+
 import { Flip, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import PublicRoute from "./components/protectedRoutes/PublicRoute"
@@ -23,6 +23,9 @@ import StaffReportsPage from "./pages/staff/StaffReportsPage"
 import VaccinationCataloguePage from "./pages/staff/VaccineAddPage"
 import VaccineCatalogueListPage from "./pages/staff/VaccineCatalogueListPage"
 import VaccineAddPage from "./pages/staff/VaccineAddPage"
+import VaccinationSchedulePage from "./pages/guardian/VaccinationSchedule"
+import MyDependents from "./pages/guardian/MyDependents"
+import GuardianDashboard from "./pages/guardian/GuardianDashboard"
 
 export function App() {
   return (
@@ -33,20 +36,21 @@ export function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
         </Route>
-         <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route element={<ProtectedRoute allowedRole="GUARDIAN" />}>
           <Route element={<GuardianLayout />}>
             <Route path="/guardian/dashboard" element={<GuardianDashboard />} />
             <Route
               path="/guardian/dependents"
-              element={<GuardianDashboard />}
+              element={<MyDependents />}
             />
             <Route
               path="/guardian/notifications"
               element={<NotificationsPage />}
             />
             <Route path="/guardian/profile" element={<ProfilePage />} />
+            <Route path="/guardian/vaccination-schedule/:dependentId" element={<VaccinationSchedulePage />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute allowedRole="STAFF" />}>
@@ -55,8 +59,8 @@ export function App() {
             <Route path="/staff/vaccines" element={<StaffVaccinesPage />} />
             <Route path="/staff/overdue" element={<OverdueVaccinationsPage />} />
             <Route path="/staff/reports" element={<StaffReportsPage />} />
-            <Route path="/staff/vaccination-add" element={<VaccineAddPage/>} />
-            <Route path="/staff/vaccine-catalog"element={<VaccineCatalogueListPage />}/>
+            <Route path="/staff/vaccination-add" element={<VaccineAddPage />} />
+            <Route path="/staff/vaccine-catalog" element={<VaccineCatalogueListPage />} />
             <Route path="/staff/profile" element={<ProfilePage />} />
           </Route>
         </Route>
@@ -65,8 +69,10 @@ export function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/staff-management" element={<StaffManagement />} />
             <Route path="/admin/profile" element={<ProfilePage />} />
-            <Route path="/admin/vaccinations" element={<StaffVaccinesPage />} />
+            <Route path="/admin/vaccines" element={<StaffVaccinesPage />} />
             <Route path="/admin/reports" element={<StaffReportsPage />} />
+            <Route path="/admin/overdue" element={<OverdueVaccinationsPage />} />
+            <Route path="/admin/notifications" element={<NotificationsPage />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

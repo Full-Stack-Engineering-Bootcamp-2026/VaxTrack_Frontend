@@ -1,13 +1,5 @@
 import axios from "axios"
 import {
-    Activity,
-    AlertTriangle,
-    ShieldCheck,
-    User,
-    Users,
-} from "lucide-react"
-
-import {
     Card,
     CardContent,
     CardHeader,
@@ -184,7 +176,7 @@ const AdminDashboard = () => {
                                         {totalGuardians}
                                     </h2>
                                 </div>
-                                <User className="text-[#7C3AED]" />
+                                <div className="text-green-600">+8.2 %</div>
                             </div>
                         </CardContent>
                     </Card>
@@ -195,7 +187,7 @@ const AdminDashboard = () => {
 
                                 <div>
                                     <p className="text-xs uppercase text-gray-400">
-                                        Total Vaccinations
+                                        Total Dependents
                                     </p>
 
                                     <h2 className="mt-2 text-3xl font-bold">
@@ -203,7 +195,9 @@ const AdminDashboard = () => {
                                     </h2>
                                 </div>
 
-                                <Users className="text-[#7C3AED]" />
+                                <div className="text-green-600">
+                                    12.5%
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -214,7 +208,7 @@ const AdminDashboard = () => {
 
                                 <div>
                                     <p className="text-xs uppercase text-gray-400">
-                                        Completed
+                                        Vaccines Given
                                     </p>
 
                                     <h2 className="mt-2 text-3xl font-bold text-green-600">
@@ -222,7 +216,7 @@ const AdminDashboard = () => {
                                     </h2>
                                 </div>
 
-                                <ShieldCheck className="text-green-600" />
+                                <div className="text-green-600">+4.1%</div>
                             </div>
                         </CardContent>
                     </Card>
@@ -241,7 +235,9 @@ const AdminDashboard = () => {
                                     </h2>
                                 </div>
 
-                                <AlertTriangle className="text-red-500" />
+                                <div className="text-red-600">
+                                    2.1%
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -260,7 +256,9 @@ const AdminDashboard = () => {
                                     </h2>
                                 </div>
 
-                                <Activity className="text-[#7C3AED]" />
+                                <div className="text-[#4A4455]">
+                                    98% Active
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -402,8 +400,9 @@ const AdminDashboard = () => {
                                 <h2 className="text-2xl font-bold">
                                     System Health
                                 </h2>
-                                <p className="mt-2 text-sm text-purple-100">
-                                    All services operational.
+                                <p className="mt-2 text-sm text-[#FFFFFFCC]">
+                                    All nodes are operational. Database integrity check
+                                    passed at 04:00 AM.
                                 </p>
                             </div>
                             <div>
@@ -443,7 +442,7 @@ const AdminDashboard = () => {
                                         }
                                     )
                                 }}
-                                className="w-full rounded-xl bg-white py-3 text-sm font-medium text-[#7C3AED]"
+                                className="w-full rounded-xl bg-white py-3 text-sm font-medium text-[#630ED4]"
                             >
                                 Run Full Audit
                             </button>

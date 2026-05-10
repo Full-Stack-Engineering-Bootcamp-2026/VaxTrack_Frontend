@@ -25,39 +25,38 @@ import { toast } from "react-toastify"
 
 import type { RootState } from "@/redux/stores/store"
 
-const navItems = [
-  {
-    label: "My Dashboard",
-    path: "/guardian/dashboard",
-  },
-
-  {
-    label: "My Dependents",
-    path: "/guardian/dependents",
-  },
-
-  {
-    label: "Vaccinations",
-    path: "/admin/vaccinations",
-  },
-
-  {
-    label: "Staff Management",
-    path: "/admin/staff-management",
-  },
-
-  {
-    label: "Reports",
-    path: "/admin/reports",
-  },
-]
-
 const Navbar = () => {
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
 
   const { token, user } = useSelector((state: RootState) => state.auth)
+  const navItems = [
+    {
+      label: "My Dashboard",
+      path: `/${user?.role.toLowerCase()}/dashboard`,
+    },
+
+    {
+      label: "My Dependents",
+      path: "/guardian/dependents",
+    },
+
+    {
+      label: "Vaccinations",
+      path: "/admin/vaccines",
+    },
+
+    {
+      label: "Staff Management",
+      path: "/admin/staff-management",
+    },
+
+    {
+      label: "Reports",
+      path: "/admin/reports",
+    },
+  ]
 
   const handleLogout = async () => {
     try {

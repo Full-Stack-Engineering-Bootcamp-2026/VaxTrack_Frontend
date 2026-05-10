@@ -24,8 +24,10 @@ import type {
 } from "@/redux/stores/store"
 
 import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom";
 
 type Dependent = {
+    id?:number;
     name: string;
     dob: string;
     age: string;
@@ -41,6 +43,7 @@ type Props = {
 };
 
 const DependentCard = ({ dependent }: Props) => {
+    const navigate = useNavigate()
     const queryClient =
         useQueryClient()
 
@@ -172,7 +175,7 @@ const DependentCard = ({ dependent }: Props) => {
                 </div>
                 <div className="mt-5 space-y-2">
 
-                    <Button className="h-10 w-full rounded-xl bg-[#7C3AED] text-white hover:bg-[#6D28D9]">
+                    <Button onClick={() => navigate(`/guardian/vaccination-schedule/${dependent.id}`)} className="h-10 w-full rounded-xl bg-[#7C3AED] text-white hover:bg-[#6D28D9]">
                         View Schedule
                     </Button>
 

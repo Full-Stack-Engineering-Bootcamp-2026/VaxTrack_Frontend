@@ -160,7 +160,7 @@ export function AppSidebar() {
 
                                             <SidebarMenuButton
                                                 className={`h-11 w-full rounded-xl px-3 text-[15px] font-medium transition-all ${isActive
-                                                        ? "bg-[#E9DDFF] text-[#7C3AED]"
+                                                        ? "bg-[#DDD6FE] text-[#5B21B6]"
                                                         : "text-gray-600 hover:bg-gray-100 hover:text-black"
                                                     }`}
                                             >

@@ -1,11 +1,10 @@
 import axios from "axios"
 import {
     CheckCircle,
-    Plus,
     ShieldCheck,
     Trash2,
 } from "lucide-react"
-
+import { BiUserPlus } from "react-icons/bi";
 import { TiCancel } from "react-icons/ti"
 import { MdKey } from "react-icons/md"
 
@@ -310,7 +309,7 @@ const StaffManagement = () => {
                                                         className="transition hover:text-green-500"
                                                     >
 
-                                                        <Plus className="h-4 w-4" />
+                                                        <BiUserPlus className="h-4 w-4" />
 
                                                     </button>
                                                 )}

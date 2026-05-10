@@ -37,7 +37,7 @@ const RecentActivitiesCard = () => {
         const token = auth?.token
 
         const response = await axios.get(
-          "http://localhost:3000/api/activities/recent?page=1&limit=5",
+          "http://localhost:3000/api/activities/recent?page=1&limit=8",
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -36,9 +36,13 @@ import {
 import { AddStaffModal } from "@/components/AddStaffModal"
 
 import { toast } from "react-toastify"
+import { useState } from "react"
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 
 const StaffManagement = () => {
-
+    const [page, setPage] = useState(1);
+    const [filter, setFilter] = useState<"ALL" | "ACTIVE" | "INACTIVE">("ALL")
+    const limit = 10;
     const queryClient = useQueryClient()
 
     const { token } = useSelector(
@@ -47,12 +51,12 @@ const StaffManagement = () => {
 
     const { data } = useQuery({
 
-        queryKey: ["staffAccounts"],
+        queryKey: ["staffAccounts", page],
 
         queryFn: async () => {
 
             const response = await axios.get(
-                "http://localhost:3000/api/users/staff?page=1&limit=10",
+                `http://localhost:3000/api/users/staff?page=${page}&limit=${limit}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -132,9 +136,20 @@ const StaffManagement = () => {
         }
     })
 
-    const staff =
-        data?.data?.data || []
+    const staff = data?.data?.data || []
+    const filteredStaff = staff.filter(
+        (member: any) => {
 
+            if (filter === "ACTIVE")
+                return member.isActive
+
+            if (filter === "INACTIVE")
+                return !member.isActive
+
+            return true
+        }
+    )
+    const pagination = data?.data?.pagination
     return (
         <div className="min-h-screen bg-[#FAFAF9] px-4 py-8 md:px-10">
 
@@ -156,26 +171,35 @@ const StaffManagement = () => {
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
 
-                    <button className="rounded-lg bg-[#EEE5FF] px-4 py-2 text-sm font-medium text-[#7C3AED]">
+                    <button onClick={() => setFilter("ALL")} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${filter === "ALL"
+                        ? "bg-[#EEE5FF] text-[#7C3AED]"
+                        : "text-gray-500 hover:bg-gray-100"
+                        }`}>
                         All Staff
                     </button>
 
-                    <button className="rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-100">
+                    <button onClick={() => setFilter("ACTIVE")} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${filter === "ACTIVE"
+                        ? "bg-[#EEE5FF] text-[#7C3AED]"
+                        : "text-gray-500 hover:bg-gray-100"
+                        }`}>
                         Active
                     </button>
 
-                    <button className="rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-100">
+                    <button onClick={() => setFilter("INACTIVE")} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${filter === "INACTIVE"
+                        ? "bg-[#EEE5FF] text-[#7C3AED]"
+                        : "text-gray-500 hover:bg-gray-100"
+                        }`}>
                         Inactive
                     </button>
 
                     <p className="ml-0 text-sm text-gray-400 md:ml-3">
-                        Showing {staff.length} staff members
+                        Showing {filteredStaff.length} staff members
                     </p>
                 </div>
 
                 <div className="mt-8 overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white">
 
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto h-100">
 
                         <Table className="min-w-225">
 
@@ -208,7 +232,7 @@ const StaffManagement = () => {
 
                             <TableBody>
 
-                                {staff.map((member: any) => (
+                                {filteredStaff.map((member: any) => (
 
                                     <TableRow key={member.id}>
 
@@ -316,25 +340,98 @@ const StaffManagement = () => {
                         </Table>
                     </div>
 
-                    <div className="flex items-center justify-between border-t bg-[#FAFAF9] px-6 py-4">
-
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-
-                            <span>
-                                Items per page:
-                            </span>
-
-                            <button className="font-medium text-[#1C1917]">
-                                10
-                            </button>
-
-                        </div>
+                    <div className="flex flex-col gap-4 border-t bg-[#FAFAF9] px-6 py-4 md:flex-row md:items-center md:justify-between">
 
                         <p className="text-sm text-gray-500">
 
-                            1 - {staff.length} of {staff.length}
+                            Showing{" "}
+
+                            {(page - 1) * limit + 1}
+
+                            {" "}to{" "}
+
+                            {Math.min(
+                                page * limit,
+                                pagination?.total || 0
+                            )}
+
+                            {" "}of{" "}
+
+                            {pagination?.total || 0}
+
+                            {" "}staff members
 
                         </p>
+
+                        <Pagination>
+
+                            <PaginationContent>
+
+                                <PaginationItem>
+
+                                    <PaginationPrevious
+                                        onClick={() => {
+
+                                            if (
+                                                pagination?.hasPreviousPage
+                                            ) {
+                                                setPage(page - 1)
+                                            }
+                                        }}
+                                        className={
+                                            !pagination?.hasPreviousPage
+                                                ? "pointer-events-none opacity-50"
+                                                : "cursor-pointer"
+                                        }
+                                    />
+
+                                </PaginationItem>
+
+                                {Array.from({
+                                    length:
+                                        pagination?.totalPages || 1,
+                                }).map((_, index) => (
+
+                                    <PaginationItem key={index}>
+
+                                        <PaginationLink
+                                            isActive={page === index + 1}
+                                            onClick={() =>
+                                                setPage(index + 1)
+                                            }
+                                            className="cursor-pointer"
+                                        >
+
+                                            {index + 1}
+
+                                        </PaginationLink>
+
+                                    </PaginationItem>
+                                ))}
+
+                                <PaginationItem>
+
+                                    <PaginationNext
+                                        onClick={() => {
+
+                                            if (
+                                                pagination?.hasNextPage
+                                            ) {
+                                                setPage(page + 1)
+                                            }
+                                        }}
+                                        className={
+                                            !pagination?.hasNextPage
+                                                ? "pointer-events-none opacity-50"
+                                                : "cursor-pointer"
+                                        }
+                                    />
+
+                                </PaginationItem>
+
+                            </PaginationContent>
+
+                        </Pagination>
                     </div>
                 </div>
 

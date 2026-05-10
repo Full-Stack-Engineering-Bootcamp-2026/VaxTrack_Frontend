@@ -26,25 +26,8 @@ const QuickActionsCard = ({ records = [] }: QuickActionsCardProps) => {
       action: () => navigate("/staff/vaccines"),
     },
 
-    {
-      title: "Generate Report",
 
-      description: "Export vaccination reports",
 
-      icon: FileText,
-
-      action: () => exportVaccinationReport(records),
-    },
-
-    {
-      title: "Manage Dependents",
-
-      description: "View dependent records",
-
-      icon: Users,
-
-      action: () => navigate("/staff/dependents"),
-    },
 
     {
       title: "Overdue Cases",
@@ -53,7 +36,7 @@ const QuickActionsCard = ({ records = [] }: QuickActionsCardProps) => {
 
       icon: AlertTriangle,
 
-      action: () => navigate("/staff/vaccines"),
+      action: () => navigate("/staff/overdue"),
     },
   ]
 

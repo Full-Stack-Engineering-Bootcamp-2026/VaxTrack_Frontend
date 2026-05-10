@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import axios from "axios"
 
-import { AlertTriangle, Clock3, ShieldCheck, Syringe } from "lucide-react"
+import { AlertTriangle, Clock3, Menu, ShieldCheck, Syringe } from "lucide-react"
 
 import StatsCard from "@/components/dashboard/stats/StatsCard"
 
@@ -44,6 +44,8 @@ const StaffDashboard = () => {
   const [pagination, setPagination] = useState<any>(null)
 
   const [complianceRate, setComplianceRate] = useState(0)
+
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const [statusData, setStatusData] = useState({
     completed: 0,
@@ -136,11 +138,68 @@ const StaffDashboard = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#FAFAF9]">
-      <div className="mx-auto flex w-full max-w-450 flex-col gap-6 px-3 py-4 sm:px-4 md:px-6 2xl:px-8">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <DashboardGreeting />
+      {sidebarOpen && (
+        <>
+          <div
+            onClick={() => setSidebarOpen(false)}
+            className="fixed inset-0 z-40 bg-black/40 xl:hidden"
+          />
 
-          <DashboardTopbarActions records={filteredRecords} />
+          <div className="fixed top-0 left-0 z-50 h-screen w-70 bg-white shadow-2xl xl:hidden">
+            <div className="flex items-center justify-between border-b border-[#E7E5E4] p-5">
+              <h2 className="text-xl font-semibold text-[#1C1917]">
+                Staff Menu
+              </h2>
+
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="rounded-lg border border-[#E7E5E4] px-3 py-1"
+              >
+                X
+              </button>
+            </div>
+
+            <div className="space-y-3 p-5">
+              <button className="w-full rounded-xl bg-[#7C3AED] px-4 py-3 text-left text-sm font-medium text-white">
+                Dashboard
+              </button>
+
+              <button className="w-full rounded-xl border border-[#E7E5E4] px-4 py-3 text-left text-sm font-medium text-[#57534E]">
+                Overdue Vaccinations
+              </button>
+
+              <button className="w-full rounded-xl border border-[#E7E5E4] px-4 py-3 text-left text-sm font-medium text-[#57534E]">
+                Reports
+              </button>
+
+              <button className="w-full rounded-xl border border-[#E7E5E4] px-4 py-3 text-left text-sm font-medium text-[#57534E]">
+                Settings
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      <div className="mx-auto flex w-full max-w-450 flex-col gap-6 px-3 py-4 sm:px-4 md:px-6 2xl:px-8">
+        <div className="flex flex-col gap-5">
+          <div className="flex items-center justify-between xl:hidden">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="flex size-11 items-center justify-center rounded-xl border border-[#E7E5E4] bg-white shadow-sm"
+            >
+              <Menu className="size-5" />
+            </button>
+
+            <h1 className="text-lg font-semibold text-[#1C1917]">
+              Staff Dashboard
+            </h1>
+          </div>
+
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <DashboardGreeting />
+
+            <DashboardTopbarActions records={filteredRecords} />
+          </div>
         </div>
 
         {loading ? (

@@ -60,11 +60,10 @@ export function App() {
         <Route element={<ProtectedRoute allowedRole="ADMIN" />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route
-              path="/admin/staff-management"
-              element={<StaffManagement />}
-            />
+            <Route path="/admin/staff-management" element={<StaffManagement />} />
             <Route path="/admin/profile" element={<ProfilePage />} />
+            <Route path="/admin/vaccinations" element={<StaffVaccinesPage />} />
+            <Route path="/admin/reports" element={<StaffReportsPage />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

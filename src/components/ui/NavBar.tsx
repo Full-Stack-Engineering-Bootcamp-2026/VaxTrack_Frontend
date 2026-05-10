@@ -26,11 +26,11 @@ const navItems = [
     },
     {
         label: "Staff Management",
-        path: "/guardian/staff",
+        path: "/admin/staff-management",
     },
     {
         label: "Reports",
-        path: "/guardian/reports",
+        path: "/admin/reports",
     },
 ]
 const Navbar = () => {

@@ -11,7 +11,6 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({ allowedRole }: ProtectedRouteProps) => {
     const { token, user } = useSelector((state: RootState) => state.auth);
     if (!token || !user) {
-        toast.warning("Unauthorized Access");
         return <Navigate to="/login" replace />;
     }
     if (user.role !== allowedRole) {

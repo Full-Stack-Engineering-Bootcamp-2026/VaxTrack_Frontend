@@ -14,6 +14,8 @@ import ResetPassword from "./pages/guardian/ResetPassword"
 import NotificationsPage from "./pages/guardian/Notifications"
 import NotFound from "./pages/404"
 import StaffDashboard from "./pages/staff/StaffDashboard"
+import AdminDashboard from "./pages/admin/AdminDashboard"
+import StaffManagement from "./pages/admin/StaffManagement"
 
 export function App() {
   return (
@@ -46,7 +48,7 @@ export function App() {
           <Route element={<StaffLayout />}>
             <Route
               path="/staff/dashboard"
-            element={<StaffDashboard />}
+              element={<StaffDashboard />}
             />
           </Route>
         </Route>
@@ -54,8 +56,11 @@ export function App() {
           <Route element={<AdminLayout />}>
             <Route
               path="/admin/dashboard"
-            // element={<AdminDashboard />}
+              element={<AdminDashboard />}
             />
+            <Route
+              path="/admin/staff-management"
+              element={<StaffManagement />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

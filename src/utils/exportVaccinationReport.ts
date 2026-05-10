@@ -1,17 +1,19 @@
-import { jsPDF } from "jspdf"
+import jsPDF from "jspdf"
 
 import autoTable from "jspdf-autotable"
 
-export const exportVaccinationReport = (
-    records: any[]
-) => {
+export const exportVaccinationReport = ({
+    records,
+    complianceRate,
+    statusData,
+}: any) => {
 
     const doc = new jsPDF()
 
-    doc.setFontSize(20)
+    doc.setFontSize(24)
 
     doc.text(
-        "Vaccination Report",
+        "VaxTrack Staff Dashboard Report",
         14,
         20
     )
@@ -24,9 +26,57 @@ export const exportVaccinationReport = (
         30
     )
 
+    doc.setFontSize(16)
+
+    doc.text(
+        "Dashboard Summary",
+        14,
+        45
+    )
+
     autoTable(doc, {
 
-        startY: 40,
+        startY: 50,
+
+        head: [
+            [
+                "Completed",
+                "Overdue",
+                "Upcoming",
+                "Compliance",
+            ],
+        ],
+
+        body: [
+            [
+                statusData?.completed ?? 0,
+                statusData?.overdue ?? 0,
+                statusData?.upcoming ?? 0,
+                `${complianceRate ?? 0}%`,
+            ],
+        ],
+
+        styles: {
+            fontSize: 11,
+            cellPadding: 5,
+        },
+
+        headStyles: {
+            fillColor: [124, 58, 237],
+        },
+    })
+
+    doc.setFontSize(16)
+
+    doc.text(
+        "Vaccination Records",
+        14,
+        95
+    )
+
+    autoTable(doc, {
+
+        startY: 100,
 
         head: [
             [
@@ -34,29 +84,25 @@ export const exportVaccinationReport = (
                 "Vaccine",
                 "Status",
                 "Due Date",
-                "Administered By",
             ],
         ],
 
         body: records.map(
-            (record) => [
+            (record: any) => [
 
                 record?.dependent
-                    ?.fullName || "N/A",
+                    ?.fullName ?? "N/A",
 
                 record?.vaccine
-                    ?.name || "N/A",
+                    ?.name ?? "N/A",
 
-                record?.status || "N/A",
+                record?.status ?? "N/A",
 
                 record?.dueDate
                     ? new Date(
                         record.dueDate
                     ).toLocaleDateString()
                     : "N/A",
-
-                record?.administeredBy
-                    ?.fullName || "N/A",
             ]
         ),
 
@@ -75,6 +121,6 @@ export const exportVaccinationReport = (
     })
 
     doc.save(
-        `vaccination-report-${Date.now()}.pdf`
+        `vaxtrack-dashboard-report-${Date.now()}.pdf`
     )
 }

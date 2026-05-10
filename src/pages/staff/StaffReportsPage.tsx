@@ -14,6 +14,7 @@ import {
 } from "recharts"
 
 import registrationGraph from "@/assets/div.h-48.png"
+
 import { exportVaccinationReport } from "@/utils/exportVaccinationReport"
 
 const StaffReportsPage = () => {
@@ -122,7 +123,34 @@ const StaffReportsPage = () => {
   }, [filteredRecords])
 
   const exportPDF = () => {
-     exportVaccinationReport(filteredRecords)
+    const completed = filteredRecords.filter(
+      (record: any) => record.status === "COMPLETED"
+    ).length
+
+    const overdue = filteredRecords.filter(
+      (record: any) => record.status === "OVERDUE"
+    ).length
+
+    const upcoming = filteredRecords.filter(
+      (record: any) => record.status === "UPCOMING"
+    ).length
+
+    const complianceRate =
+      filteredRecords.length > 0
+        ? Math.round((completed / filteredRecords.length) * 100)
+        : 0
+
+    exportVaccinationReport({
+      records: filteredRecords,
+
+      complianceRate,
+
+      statusData: {
+        completed,
+        overdue,
+        upcoming,
+      },
+    })
   }
 
   return (

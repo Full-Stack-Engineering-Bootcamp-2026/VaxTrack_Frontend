@@ -1,54 +1,41 @@
-import { Badge } from "../../../components/ui/badge";
+import { Badge } from "../../../components/ui/badge"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-type Status =| "COMPLETED"    | "UPCOMING"    | "OVERDUE";
+type Status = "COMPLETED" | "UPCOMING" | "OVERDUE"
 
 interface StatusBadgeProps {
-    status: Status;
+  status: Status
 }
 
-const statusStyles: Record<Status,string> = {
+const statusStyles: Record<Status, string> = {
+  COMPLETED: "border-[#BBF7D0] bg-[#DCFCE7] text-[#15803D] hover:bg-[#DCFCE7]",
 
-    COMPLETED:
-        "bg-green-100 text-green-700 border-green-200 hover:bg-green-100",
+  UPCOMING: "border-[#BFDBFE] bg-[#DBEAFE] text-[#1D4ED8] hover:bg-[#DBEAFE]",
 
-    UPCOMING:
-        "bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-100",
+  OVERDUE: "border-[#FECACA] bg-[#FEE2E2] text-[#B91C1C] hover:bg-[#FEE2E2]",
+}
 
-    OVERDUE:
-        "bg-red-100 text-red-700 border-red-200 hover:bg-red-100",
-};
+const statusLabels: Record<Status, string> = {
+  COMPLETED: "COMPLETED",
 
-const statusLabels: Record<
-    Status,
-    string
-> = {
+  UPCOMING: "UPCOMING",
 
-    COMPLETED: "Completed",
+  OVERDUE: "OVERDUE",
+}
 
-    UPCOMING: "Upcoming",
+const StatusBadge = ({ status }: StatusBadgeProps) => {
+  return (
+    <Badge
+      variant="outline"
+      className={cn(
+        "rounded-full border px-4 py-1.5 text-xs font-bold tracking-wide shadow-none",
+        statusStyles[status]
+      )}
+    >
+      {statusLabels[status]}
+    </Badge>
+  )
+}
 
-    OVERDUE: "Overdue",
-};
-
-const StatusBadge = ({
-    status,
-}: StatusBadgeProps) => {
-
-    return (
-        <Badge
-            variant="outline"
-            className={cn(
-
-                "rounded-full px-3 py-1 text-[11px] font-semibold border",
-
-                statusStyles[status]
-            )}
-        >
-            {statusLabels[status]}
-        </Badge>
-    );
-};
-
-export default StatusBadge;
+export default StatusBadge

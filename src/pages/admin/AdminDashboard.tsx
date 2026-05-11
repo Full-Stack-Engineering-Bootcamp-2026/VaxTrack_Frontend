@@ -22,6 +22,7 @@ import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/stores/store"
 import { toast } from "sonner"
 import { AddStaffModal } from "@/components/AddStaffModal"
+import { useNavigate } from "react-router-dom"
 
 const weeklyData = [
     {
@@ -53,6 +54,7 @@ const weeklyData = [
 const COLORS = ["#22C55E", "#7C3AED", "#EF4444"]
 
 const AdminDashboard = () => {
+    const navigate = useNavigate()
     const { token } = useSelector(
         (state: RootState) => state.auth
     )
@@ -156,7 +158,9 @@ const AdminDashboard = () => {
                             </button>
                         </AddStaffModal>
 
-                        <button className="rounded-[10px] bg-[#7C3AED] px-5 py-2 text-sm font-medium text-white">
+                        <button
+                        onClick={()=> navigate('/admin/reports')}
+                        className="rounded-[10px] bg-[#7C3AED] px-5 py-2 text-sm font-medium text-white">
                             View Reports
                         </button>
                     </div>

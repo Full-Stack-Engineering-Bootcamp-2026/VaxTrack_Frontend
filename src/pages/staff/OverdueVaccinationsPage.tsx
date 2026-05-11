@@ -97,7 +97,7 @@ const OverdueVaccinationsPage = () => {
   }, [records])
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] p-6">
+    <div className="min-h-screen bg-[#F5F5F4] p-6">
       <div className="mx-auto max-w-7xl space-y-6">
         <div>
           <h1 className="text-4xl font-bold text-[#1C1917]">
@@ -110,7 +110,7 @@ const OverdueVaccinationsPage = () => {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="flex items-center gap-4 rounded-2xl border border-[#E7E5E4] bg-white px-6 py-5 shadow-sm">
+          <div className="flex items-center gap-4 rounded-3xl border border-[#CCC3D8] bg-[#FAF2EC] px-6 py-5 shadow-sm">
             <div className="flex size-12 items-center justify-center rounded-full bg-[#FFDAD6]">
               <AlertTriangle className="size-6 text-[#BA1A1A]" />
             </div>
@@ -126,7 +126,7 @@ const OverdueVaccinationsPage = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 rounded-2xl border border-[#E7E5E4] bg-white px-6 py-5 shadow-sm">
+          <div className="flex items-center gap-4 rounded-3xl border border-[#CCC3D8] bg-[#FAF2EC] px-6 py-5 shadow-sm">
             <div className="flex size-12 items-center justify-center rounded-full bg-[#DCD5FD]">
               <ShieldAlert className="size-6 text-[#630ED4]" />
             </div>
@@ -142,7 +142,7 @@ const OverdueVaccinationsPage = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 rounded-2xl border border-[#E7E5E4] bg-white px-6 py-5 shadow-sm">
+          <div className="flex items-center gap-4 rounded-3xl border border-[#CCC3D8] bg-[#FAF2EC] px-6 py-5 shadow-sm">
             <div className="flex size-12 items-center justify-center rounded-full bg-[#85F8C4]">
               <Syringe className="size-6 text-[#047857]" />
             </div>
@@ -216,7 +216,9 @@ const OverdueVaccinationsPage = () => {
 
                   <div>
                     <span
-                      className={`rounded-full px-3 py-1 text-sm font-medium text-white ${getBadgeColor(daysOverdue)}`}
+                      className={`rounded-full px-3 py-1 text-sm font-medium text-white ${getBadgeColor(
+                        daysOverdue
+                      )}`}
                     >
                       {daysOverdue} Days
                     </span>

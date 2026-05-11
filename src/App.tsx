@@ -73,6 +73,7 @@ export function App() {
             <Route path="/admin/reports" element={<StaffReportsPage />} />
             <Route path="/admin/overdue" element={<OverdueVaccinationsPage />} />
             <Route path="/admin/notifications" element={<NotificationsPage />} />
+            <Route path="/admin/vaccine-catalog" element={<VaccineCatalogueListPage />} />
             <Route path="/admin/vaccination-add" element={<VaccineAddPage />} />
           </Route>
         </Route>

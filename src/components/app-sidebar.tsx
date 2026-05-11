@@ -12,6 +12,7 @@ import {
     BarChart3,
     BellRing,
     ClipboardList,
+    ClipboardPlus,
     LayoutGrid,
     LogOut,
     Settings,
@@ -46,6 +47,12 @@ const menuItems = [
         icon: ClipboardList,
         adminPath: "/admin/vaccines",
         staffPath: "/staff/vaccines",
+    },
+    {
+        title: "Vaccine Catalog",
+        icon: ClipboardPlus,
+        adminPath: "/admin/vaccine-catalog",
+        staffPath: "/staff/vaccine-catalog",
     },
     {
         title: "Overdue Overview",

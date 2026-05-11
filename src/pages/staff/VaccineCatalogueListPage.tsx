@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import axios from "axios"
 
-import { Ban, ChevronLeft, ChevronRight, Pencil, Plus } from "lucide-react"
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react"
 
 import protocolImage from "@/assets/Medical Science.png"
 
@@ -109,7 +109,7 @@ const VaccineCatalogueListPage = () => {
               placeholder="Search by vaccine name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-12 w-[280px] rounded-2xl border border-[#E7E5E4] bg-white px-4 text-sm transition outline-none focus:border-[#7C3AED]"
+              className="h-12 w-70 rounded-2xl border border-[#E7E5E4] bg-white px-4 text-sm transition outline-none focus:border-[#7C3AED]"
             />
 
             <button

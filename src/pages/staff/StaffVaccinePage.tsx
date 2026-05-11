@@ -152,7 +152,7 @@ const StaffVaccinesPage = () => {
 
   useEffect(() => {
     applyFilters()
-  }, [debouncedSearch, page])
+  }, [debouncedSearch, page, status, selectedVaccine, fromDate])
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
@@ -213,11 +213,13 @@ const StaffVaccinesPage = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <img
-                src={user?.imageUrl || "https://i.pravatar.cc/150?img=12"}
-                alt="profile"
-                className="size-12 rounded-full object-cover"
-              />
+              {user?.role !== "ADMIN" && (
+                <img
+                  src={user?.imageUrl || "https://i.pravatar.cc/150?img=12"}
+                  alt="profile"
+                  className="size-12 rounded-full object-cover"
+                />
+              )}
 
               <div>
                 <h3 className="text-sm font-semibold text-[#7C3AED]">

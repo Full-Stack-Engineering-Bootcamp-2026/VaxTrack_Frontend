@@ -23,7 +23,7 @@ const QuickActionsCard = ({ records = [] }: QuickActionsCardProps) => {
 
       icon: Syringe,
 
-      action: () => navigate("/staff/vaccines"),
+      action: () => navigate("/staff/vaccination-add"),
     },
 
 

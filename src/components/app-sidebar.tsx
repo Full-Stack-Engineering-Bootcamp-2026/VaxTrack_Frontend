@@ -207,20 +207,23 @@ export function AppSidebar() {
 
                 <SidebarMenu className="space-y-2">
 
-                    <SidebarMenuItem>
-
+                   <SidebarMenuItem>
                         <SidebarMenuButton
                             asChild
                             className="h-11 rounded-xl px-3 text-gray-600 hover:bg-gray-100"
                         >
+                            <button
+                            onClick={() =>
+                                navigate(
+                                user?.role === "ADMIN"
+                                    ? "/admin/profile"
+                                    : "/staff/profile"
+                                )
+                            }
+                            >
+                            <Settings className="h-5 w-5" />
 
-                            <button>
-
-                                <Settings className="h-5 w-5" />
-
-                                <span>
-                                    Settings
-                                </span>
+                            <span>Settings</span>
                             </button>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

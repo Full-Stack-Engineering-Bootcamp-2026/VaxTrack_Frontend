@@ -379,7 +379,7 @@ const ProfilePage = () => {
                     disabled={updating}
                     className="h-11 rounded-xl bg-[#7C3AED] px-6 hover:bg-[#6D28D9]"
                   >
-                    {updating ? "Saving..." : "Edit Profile"}
+                    {updating ? "Saving..." : "Save Profile"}
                   </Button>
 
                   <Button

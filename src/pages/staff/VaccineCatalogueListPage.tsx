@@ -113,7 +113,7 @@ const VaccineCatalogueListPage = () => {
             />
 
             <button
-              onClick={() => navigate("/admin/vaccination-catalogue")}
+              onClick={() => navigate("/staff/vaccination-add")}
               className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#7C3AED] px-5 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-[#6D28D9]"
             >
               <Plus className="size-4" />

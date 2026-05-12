@@ -280,7 +280,7 @@ The app runs at `http://localhost:5173`
 
 ## 🔗 Related Repository
 
-> Backend Repository: `<backend-repository-url>`
+> Backend Repository: https://github.com/Full-Stack-Engineering-Bootcamp-2026/VaxTrack_Backend.git
 
 ---
 

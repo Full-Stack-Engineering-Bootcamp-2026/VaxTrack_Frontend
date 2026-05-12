@@ -29,7 +29,7 @@ import GuardianDashboard from "./pages/guardian/GuardianDashboard"
 
 export function App() {
   return (
-    <>
+    <div className="font-sans">
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/" element={<Login />} />
@@ -80,8 +80,9 @@ export function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} transition={Flip} />
-    </>
+    </div>
   )
 }
 
 export default App
+    

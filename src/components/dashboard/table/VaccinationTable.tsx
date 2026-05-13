@@ -15,6 +15,10 @@ import StatusBadge from "../shared/StatusBadge"
 
 import PaginationControls from "../shared/PaginationControls"
 
+import { useSelector } from "react-redux"
+
+import type { RootState } from "@/redux/stores/store"
+
 interface VaccinationTableProps {
   records: any[]
 
@@ -31,41 +35,44 @@ const VaccinationTable = ({
   onPageChange,
   refetchData,
 }: VaccinationTableProps) => {
+  const { user } = useSelector((state: RootState) => state.auth)
+
+  const isStaff = user?.role === "STAFF"
   return (
     <Card className="overflow-hidden rounded-[28px] border border-[#E7E5E4] bg-white shadow-sm">
-      <CardContent className="overflow-x-auto p-0">
+      <CardContent className="p-6">
         <Table>
           <TableHeader className="bg-[#FAFAF9]">
             <TableRow className="hover:bg-[#FAFAF9]">
-              <TableHead className="h-14 min-w-60 pl-6 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="h-14 pl-6 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Dependent Name
               </TableHead>
 
-              <TableHead className="min-w-42.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Guardian
               </TableHead>
 
-              <TableHead className="min-w-37.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Vaccine
               </TableHead>
 
-              <TableHead className="min-w-30 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Rec. Age
               </TableHead>
 
-              <TableHead className="min-w-35 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Status
               </TableHead>
 
-              <TableHead className="min-w-37.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Date Admin.
               </TableHead>
 
-              <TableHead className="min-w-42.5 text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Administered By
               </TableHead>
 
-              <TableHead className="min-w-30 pr-6 text-right text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
+              <TableHead className="pr-6 text-right text-[11px] font-semibold tracking-wide text-[#78716C] uppercase">
                 Actions
               </TableHead>
             </TableRow>
@@ -165,13 +172,15 @@ const VaccinationTable = ({
                     </TableCell>
 
                     <TableCell className="pr-6 text-right">
-                      <VaccinationTableActions
-                        id={record.id}
-                        status={record.status}
-                        onSuccess={refetchData}
-                        record={record}
-                        refetchData={refetchData}
-                      />
+                      {isStaff && record.status === "COMPLETED" ? null : (
+                        <VaccinationTableActions
+                          id={record.id}
+                          status={record.status}
+                          onSuccess={refetchData}
+                          record={record}
+                          refetchData={refetchData}
+                        />
+                      )}
                     </TableCell>
                   </TableRow>
                 )

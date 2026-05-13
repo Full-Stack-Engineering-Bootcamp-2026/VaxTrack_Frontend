@@ -248,7 +248,7 @@ const StaffDashboard = () => {
           </div>
 
           <div className="h-full min-w-0">
-            <VaccinationTrendChart records={records} />
+            <VaccinationTrendChart />
           </div>
         </div>
 

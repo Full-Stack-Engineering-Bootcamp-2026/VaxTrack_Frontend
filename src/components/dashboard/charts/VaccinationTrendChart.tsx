@@ -17,6 +17,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 interface VaccinationTrendChartProps {
   records?: any[]
@@ -30,28 +32,37 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-const VaccinationTrendChart = ({
-  records = [],
-}: VaccinationTrendChartProps) => {
-  const monthlyData = records.reduce((acc: any, record: any) => {
-    const month = new Date(record.dueDate).toLocaleString("default", {
-      month: "long",
-    })
+const VaccinationTrendChart = () => {
+  const [records, setRecords] = useState<any[]>([])
 
-    const existing = acc.find((item: any) => item.month === month)
+  const getToken = () => {
+    const persistedState = localStorage.getItem("persist:root")
 
-    if (existing) {
-      existing.vaccinations += 1
-    } else {
-      acc.push({
-        month,
+    const parsedState = persistedState ? JSON.parse(persistedState) : null
 
-        vaccinations: 1,
-      })
-    }
+    const auth = parsedState?.auth ? JSON.parse(parsedState.auth) : null
 
-    return acc
+    return auth?.token
+  }
+  const headers = {
+    Authorization: `Bearer ${getToken()}`,
+  }
+
+  const getRecord = async () => {
+    const resp = await axios.get(
+      `http://localhost:3000/api/vaccination-record/trend`,
+      {
+        headers,
+      }
+    )
+    const chartData = resp.data?.data || []
+    setRecords(chartData)
+  }
+  useEffect(() => {
+    getRecord()
   }, [])
+
+  const monthlyData = records
 
   return (
     <Card className="rounded-2xl border border-[#E7E5E4] shadow-sm">

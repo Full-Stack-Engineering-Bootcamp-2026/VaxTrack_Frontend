@@ -20,9 +20,6 @@ import {
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-interface VaccinationTrendChartProps {
-  records?: any[]
-}
 
 const chartConfig = {
   vaccinations: {
